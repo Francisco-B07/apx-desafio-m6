@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node ./server/index.ts",
+    "dev": "nodemon --watch ./server/index.ts --exec ts-node ./server/dev.ts",
     "build": "tsc ./server/index.ts",
     "start": "node ./server/index.js"
   },
