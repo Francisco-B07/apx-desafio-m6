@@ -1,0 +1,40 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+.nombre1,
+.score1 {
+  font-family: "American Typewriter";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 100%;
+  color: #000000;
+}
+.nombre1,
+.score1 {
+  font-family: "American Typewriter";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 100%;
+  color: #ff6442;
+}
+.sala {
+  font-family: "American Typewriter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 108.5%;
+  text-align: right;
+  color: #000000;
+}
+.numero-sala {
+  font-family: "American Typewriter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 108.5%;
+  text-align: right;
+  color: #000000;
+}

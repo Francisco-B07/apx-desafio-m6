@@ -1,4 +1,4 @@
-export function initWelcome(params) {
+export function initIngresarSala(params) {
   const div = document.createElement("div");
 
   const imageURL = require("url:../../img/fondo.svg");
@@ -42,27 +42,40 @@ export function initWelcome(params) {
           }
 
         }
-
-        .container-boton-nuevoJuego{
-          width: 400px;
-          height: 87px;
+        .ingresar-codigo{
+          font-family: 'Odibee Sans';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 45px;
+          line-height: 50px;
+          text-align: center;
+          color: black;   
+          background: #FFFFFF;
+          border: 10px solid #182460;
+          border-radius: 10px;    
+          Width: 400px;
+          height: 74px;
           margin-top: -45px;
+          margin-bottom: 18px;
+
         }
+        .ingresar-codigo::placeholder{
+          color: #D9D9D9;
+        }
+
         @media (max-width: 380px){
-          .container-boton-nuevoJuego{
+          .ingresar-codigo{
             width: 322px;
             margin-top: -40px;
-
           }
         }
-        .container-boton-ingresarSala{
+        .container-boton{
           width: 400px;
-          height: 87px;
           margin-top: 20px;
 
         }
         @media (max-width: 380px){
-          .container-boton-ingresarSala{
+          .container-boton{
             width: 322px;
           }
         }
@@ -101,11 +114,9 @@ export function initWelcome(params) {
         <span>ó</span> 
         <text-el tag="h1">Tijera</text-el>
       </div>
-      <div class="container-boton-nuevoJuego">
-          <button-el class="boton">Nuevo Juego</button-el>
-      </div>
-      <div class="container-boton-ingresarSala">
-          <button-el class="boton">Ingresar a una sala</button-el>
+      <input class="ingresar-codigo" type="text" placeholder="codigo">
+      <div class="container-boton">
+          <button-el class="boton">Ingresar a la sala</button-el>
       </div>
       <div class="container-figuras">      
         <piedra-papel-tijera></piedra-papel-tijera>
@@ -115,14 +126,10 @@ export function initWelcome(params) {
   `;
 
   div.append(style);
-  var botonNuevoJuegoEl = div.querySelector(".container-boton-nuevoJuego");
-  var botonIngresarSalaEl = div.querySelector(".container-boton-ingresarSala");
+  var botonEl = div.querySelector(".container-boton");
 
-  botonNuevoJuegoEl.addEventListener("click", () => {
+  botonEl.addEventListener("click", () => {
     params.goTo("/empezar");
-  });
-  botonIngresarSalaEl.addEventListener("click", () => {
-    params.goTo("/ingresarSala");
   });
 
   return div;

@@ -2,10 +2,25 @@ import { initWelcome } from "./pages/welcome";
 import { initInstructions } from "./pages/instructions";
 import { initPlay } from "./pages/play";
 import { initResult } from "./pages/result";
+import { initIngresarSala } from "./pages/ingresarSala";
+import { initEmpezar } from "./pages/empezar";
+import { initCompartiCodigo } from "./pages/compartiCodigo";
 const routes = [
   {
     path: /\/welcome/,
     component: initWelcome,
+  },
+  {
+    path: /\/ingresarSala/,
+    component: initIngresarSala,
+  },
+  {
+    path: /\/empezar/,
+    component: initEmpezar,
+  },
+  {
+    path: /\/compartiCodigo/,
+    component: initCompartiCodigo,
   },
   {
     path: /\/instructions/,
