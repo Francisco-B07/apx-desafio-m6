@@ -27,10 +27,10 @@ app.get("/env", (req, res) => {
 });
 
 app.use(express.static("dist"));
-// app.get("*", (req, res) => {
-//   // MODIFICAR RUTA PARA TOMAR EL DIST FUERA DE LA CARPETA SERVER
-//   res.sendFile(ruta);
-// });
+app.get("*", (req, res) => {
+  // MODIFICAR RUTA PARA TOMAR EL DIST FUERA DE LA CARPETA SERVER
+  res.sendFile(ruta);
+});
 
 app.listen(port, () => {
   console.log("app corriendo en el puerto " + port);
