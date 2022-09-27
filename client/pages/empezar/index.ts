@@ -1,3 +1,4 @@
+import { state } from "../../state";
 export function initEmpezar(params) {
   const div = document.createElement("div");
 
@@ -122,7 +123,7 @@ export function initEmpezar(params) {
         <text-el tag="h1">Tijera</text-el>
       </div>
       <label for="nombre" class="label-nombre">Tu Nombre</label>
-      <input class="ingresar-nombre" type="text">
+      <input class="ingresar-nombre" type="text" name="nombre">
       <div class="container-boton">
           <button-el class="boton">Empezar</button-el>
       </div>
@@ -134,10 +135,18 @@ export function initEmpezar(params) {
   `;
 
   div.append(style);
-  var botonEl = div.querySelector(".container-boton");
 
+  const inputEl = div.querySelector(".ingresar-nombre");
+  const input = inputEl as any;
+
+  var botonEl = div.querySelector(".container-boton");
   botonEl.addEventListener("click", () => {
-    params.goTo("/compartiCodigo");
+    state.setNombre(input.value);
+    if (input.value !== "") {
+      params.goTo("/compartiCodigo");
+    } else {
+      alert("Debe ingresar un nombre para continuar");
+    }
   });
 
   return div;

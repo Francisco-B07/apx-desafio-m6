@@ -1,6 +1,11 @@
 {
     "compilerOptions": {
-        "target": "ESNext",
-        "moduleResolution": "node"
-    }
-}
+      "target": "esnext",
+      "moduleResolution": "node",
+      "resolveJsonModule": true,
+      "allowSyntheticDefaultImports": true,
+      "outDir": "./test"
+    },
+    "files": ["./server/index.ts"]
+  }
+

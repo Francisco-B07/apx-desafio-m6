@@ -16,7 +16,7 @@ import { initEstrella } from "./components/estrella";
   initPiedra();
   initPapel();
   initPiedraPapelTijera();
-  const root = document.querySelector(".root");
+  const root = document.querySelector(".root")!;
   initRouter(root);
   state.init();
 })();
