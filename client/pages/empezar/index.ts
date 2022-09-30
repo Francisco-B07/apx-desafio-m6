@@ -1,3 +1,4 @@
+import { stat } from "fs";
 import { state } from "../../state";
 export function initEmpezar(params) {
   const div = document.createElement("div");
@@ -140,8 +141,26 @@ export function initEmpezar(params) {
   const input = inputEl as any;
 
   var botonEl = div.querySelector(".container-boton");
-  botonEl.addEventListener("click", () => {
+  botonEl?.addEventListener("click", () => {
+    // Seteo el nombre
     state.setNombre(input.value);
+    // Reviso el state
+    const cs = state.getState();
+
+    // Si no tiene codigo de Room
+
+    state.signIn((err) => {
+      if (cs.roomNuevo) {
+        console.log("room vacio");
+        if (err) console.error("Hubo un error en el signIn");
+        state.askNewRoom(() => {
+          state.accessToRoom();
+        });
+      } else {
+        console.log("room NO vacio");
+        state.accessToRoom();
+      }
+    });
     if (input.value !== "") {
       params.goTo("/compartiCodigo");
     } else {

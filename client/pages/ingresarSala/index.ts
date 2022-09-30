@@ -1,3 +1,4 @@
+import { state } from "../../state";
 export function initIngresarSala(params) {
   const div = document.createElement("div");
 
@@ -126,9 +127,13 @@ export function initIngresarSala(params) {
   `;
 
   div.append(style);
+  const inputEl = div.querySelector(".ingresar-codigo");
+  const input = inputEl as any;
+
   var botonEl = div.querySelector(".container-boton");
 
-  botonEl.addEventListener("click", () => {
+  botonEl?.addEventListener("click", () => {
+    state.setRoomId(input.value);
     params.goTo("/empezar");
   });
 

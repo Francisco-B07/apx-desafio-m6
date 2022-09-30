@@ -1,6 +1,8 @@
+import { state } from "../../state";
 export function initCompartiCodigo(params) {
   const div = document.createElement("div");
   const imageURL = require("url:../../img/fondo.svg");
+  const cs = state.getState();
 
   var style = document.createElement("style");
   style.textContent = `
@@ -108,7 +110,7 @@ export function initCompartiCodigo(params) {
     <div class="header">
     <div class="score">
       <div class="player1">
-        <span class="nombre1">:</span>
+        <span class="nombre1">${cs.nombre}:</span>
         <span class="score1"></span>
       </div>
       <div class="player2">
@@ -118,12 +120,12 @@ export function initCompartiCodigo(params) {
     </div>
     <div class="sala">
       <p class="sala">Sala</p>
-      <p class="numero-sala"></p>
+      <p class="numero-sala">${cs.roomId}</p>
     </div>
   </div>
       <div class="instrucciones">    
         <text-el tag="p"> Compartí el código:</text-el>
-        <span class="codigo"></span>
+        <span class="codigo">${cs.roomId}</span>
         <text-el tag="p"> Con tu contrincante</text-el>
         
        

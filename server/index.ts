@@ -2,11 +2,11 @@ import * as express from "express";
 import { firestore, rtdb } from "./db";
 import * as path from "path";
 import * as cors from "cors";
-// import { nanoid } from "nanoid";
 import { v4 as uuidv4 } from "uuid";
 
 const port = process.env.PORT || 3000;
 const ruta = path.resolve(__dirname, "../dist/index.html");
+
 const app = express();
 
 app.use(express.json());
@@ -15,7 +15,8 @@ app.use(cors());
 const playersCollection = firestore.collection("players");
 const roomsCollection = firestore.collection("rooms");
 
-app.post("/signup", function (req, res) {
+// SIGNUP AND SIGNIN OR SIGNIN
+app.post("/signin", function (req, res) {
   const nombre = req.body.nombre;
   playersCollection
     .where("nombre", "==", nombre)
@@ -33,31 +34,41 @@ app.post("/signup", function (req, res) {
             });
           });
       } else {
-        res.status(400).json({
-          message: "player already exists",
-        });
+        playersCollection
+          .where("nombre", "==", nombre)
+          .get()
+          .then((searchResponse) => {
+            if (searchResponse.empty) {
+              res.status(404).json({
+                message: "not found",
+              });
+            } else {
+              res.json({
+                id: searchResponse.docs[0].id,
+              });
+            }
+          });
       }
     });
 });
 
-app.post("/auth", (req, res) => {
-  const { nombre } = req.body;
-
-  playersCollection
-    .where("nombre", "==", nombre)
-    .get()
-    .then((searchResponse) => {
-      if (searchResponse.empty) {
-        res.status(404).json({
-          message: "not found",
-        });
-      } else {
-        res.json({
-          id: searchResponse.docs[0].id,
-        });
-      }
-    });
-});
+// app.post("/auth", (req, res) => {
+//   const { nombre } = req.body;
+//   playersCollection
+//     .where("nombre", "==", nombre)
+//     .get()
+//     .then((searchResponse) => {
+//       if (searchResponse.empty) {
+//         res.status(404).json({
+//           message: "not found",
+//         });
+//       } else {
+//         res.json({
+//           id: searchResponse.docs[0].id,
+//         });
+//       }
+//     });
+// });
 
 // CREAR ROOM
 app.post("/rooms", (req, res) => {

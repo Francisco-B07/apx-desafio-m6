@@ -1,3 +1,5 @@
+import { state } from "../../state";
+
 export function initWelcome(params) {
   const div = document.createElement("div");
 
@@ -118,10 +120,12 @@ export function initWelcome(params) {
   var botonNuevoJuegoEl = div.querySelector(".container-boton-nuevoJuego");
   var botonIngresarSalaEl = div.querySelector(".container-boton-ingresarSala");
 
-  botonNuevoJuegoEl.addEventListener("click", () => {
+  botonNuevoJuegoEl?.addEventListener("click", () => {
+    state.setNuevoRoom(true);
     params.goTo("/empezar");
   });
-  botonIngresarSalaEl.addEventListener("click", () => {
+  botonIngresarSalaEl?.addEventListener("click", () => {
+    state.setNuevoRoom(false);
     params.goTo("/ingresarSala");
   });
 

@@ -7,6 +7,7 @@ import { initPapel } from "./components/papel";
 import { initPiedraPapelTijera } from "./components/piedra-papel-tijera";
 import { state } from "./state";
 import { initEstrella } from "./components/estrella";
+import { Router } from "express";
 
 (function () {
   initEstrella();
@@ -19,4 +20,13 @@ import { initEstrella } from "./components/estrella";
   const root = document.querySelector(".root")!;
   initRouter(root);
   state.init();
+
+  // ---------------------------------------------------
+  // // al comenzar
+  // state.init()
+  // // recupera el state del localStorage
+  // const cs = state.getState()
+  // if(cs.rtdbRoomId && cs.playerId){
+  //   // Router.push()
+  // }
 })();

@@ -80,7 +80,7 @@ export function initInstructions(params) {
   div.append(style);
   var botonEl = div.querySelector(".container-boton");
 
-  botonEl.addEventListener("click", () => {
+  botonEl?.addEventListener("click", () => {
     params.goTo("/play");
   });
 
