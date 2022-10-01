@@ -153,7 +153,6 @@ export function initEmpezar(params) {
 
     state.signIn((err) => {
       if (cs.roomNuevo) {
-        console.log("room vacio");
         if (err) console.error("Hubo un error en el signIn");
         state.askNewRoom(() => {
           state.accessToRoom((err) => {
@@ -171,28 +170,28 @@ export function initEmpezar(params) {
           });
         });
       } else {
-        console.log("room NO vacio");
         state.accessToRoom((err) => {
           if (err) console.error("Hubo un error en el signIn");
           state.pushJugada();
-          state.listenRoom();
-          if (input.value !== "") {
-            const currentState = localStorage.getItem("state");
-            if (currentState) {
-              const localData = JSON.parse(currentState);
-              if (!localData.ocupada) {
-                console.log("no ocupada", cs.players);
+          state.listenRoom((err) => {
+            if (err) console.error("Hubo un error en el signIn");
+            if (input.value !== "") {
+              const currentState = localStorage.getItem("state");
+              if (currentState) {
+                const localData = JSON.parse(currentState);
+                if (!localData.ocupada) {
+                  console.log("no ocupada", cs.players);
 
-                params.goTo("/compartiCodigo");
+                  params.goTo("/compartiCodigo");
+                } else {
+                  alert("La sala ya esta ocupada");
+                }
               } else {
-                alert("La sala ya esta ocupada");
+                alert("Debe ingresar un nombre para continuar");
               }
-            } else {
-              alert("Debe ingresar un nombre para continuar");
             }
-          }
+          });
         });
-        // state.pushJugada();
       }
     });
   });

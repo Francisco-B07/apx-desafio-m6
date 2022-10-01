@@ -20,6 +20,7 @@ const state = {
   data: {
     roomNuevo: false,
     nombre: "",
+    nombreRival: "",
     playerId: "",
     roomId: "",
     rtdbRoomId: "",
@@ -65,7 +66,7 @@ const state = {
     cs.roomNuevo = roomNuevo;
     this.setState(cs);
   },
-  setPlayers(players: number) {
+  setCantPlayers(players: number) {
     const cs = this.getState();
 
     cs.players = players;
@@ -75,6 +76,14 @@ const state = {
     const cs = this.getState();
 
     cs.ocupada = ocupada;
+    this.setState(cs);
+  },
+  setNombreRival(nombreRival: boolean) {
+    const cs = this.getState();
+
+    cs.nombreRival = nombreRival;
+    console.log(cs.nombreRival);
+
     this.setState(cs);
   },
 
@@ -144,7 +153,10 @@ const state = {
   },
 
   askNewRoom(callback?) {
+    this.setNombreRival("");
     this.setSalaOcupada(false);
+    this.setCantPlayers(0);
+
     const cs = this.getState();
     if (cs.playerId) {
       fetch(API_BASE_URL + "/rooms", {
@@ -185,35 +197,11 @@ const state = {
         }
       });
   },
-  listenRoom() {
-    const cs = this.getState();
-    const roomsRef = rtdb.ref("/rooms/" + cs.rtdbRoomId);
-
-    roomsRef.on("value", (snap) => {
-      const cs = this.getState();
-
-      const rtdbRoom = snap.val();
-      const playersList = map(rtdbRoom.currentGame);
-      console.log("list", playersList);
-
-      const players = playersList.length;
-      this.setPlayers(players);
-
-      if (players < 2) {
-        this.setSalaOcupada(false);
-      } else {
-        const jugadorUno = playersList[0].nombre;
-        const jugadorDos = playersList[1]?.nombre;
-        if (cs.nombre != jugadorUno && cs.nombre != jugadorDos) {
-          this.setSalaOcupada(true);
-        } else {
-          this.setSalaOcupada(false);
-        }
-      }
-    });
-  },
   pushJugada() {
+    console.log("inicia push");
+
     const cs = this.getState();
+
     if (cs.players < 2) {
       fetch(API_BASE_URL + "/jugada", {
         method: "post",
@@ -225,14 +213,53 @@ const state = {
         }),
       });
     }
+    console.log("termina push");
   },
+  listenRoom(callback?) {
+    const cs = this.getState();
+    const roomsRef = rtdb.ref("/rooms/" + cs.rtdbRoomId);
+
+    roomsRef.on("value", (snap) => {
+      console.log("empiezo a escuchar");
+      const cs = this.getState();
+
+      const rtdbRoom = snap.val();
+      const playersList = map(rtdbRoom.currentGame);
+      console.log("list", playersList);
+
+      const players = playersList.length;
+      this.setCantPlayers(players);
+
+      if (players < 2) {
+        this.setSalaOcupada(false);
+      } else {
+        const jugadorUno = playersList[0].nombre;
+        const jugadorDos = playersList[1].nombre;
+        console.log("1", jugadorUno);
+        console.log("2", jugadorDos);
+
+        if (cs.nombre != jugadorUno && cs.nombre != jugadorDos) {
+          this.setSalaOcupada(true);
+        } else {
+          this.setSalaOcupada(false);
+        }
+        if (cs.nombre == jugadorUno) {
+          this.setNombreRival(jugadorDos);
+        } else {
+          this.setNombreRival(jugadorUno);
+        }
+      }
+      if (callback) callback();
+    });
+  },
+
   setState(newState) {
     this.data = newState;
     for (const cb of this.listeners) {
       cb(newState);
     }
     localStorage.setItem("state", JSON.stringify(newState));
-    console.log("soy el state, he cambiado", this.getState());
+    // console.log("soy el state, he cambiado", this.getState());
   },
 
   subscribe(callback: (any) => any) {
