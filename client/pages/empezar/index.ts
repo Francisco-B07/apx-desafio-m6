@@ -1,4 +1,5 @@
 import { stat } from "fs";
+import { stringify } from "querystring";
 import { state } from "../../state";
 export function initEmpezar(params) {
   const div = document.createElement("div");
@@ -158,6 +159,7 @@ export function initEmpezar(params) {
           state.accessToRoom((err) => {
             if (err) console.error("Hubo un error en el signIn");
             state.pushJugada();
+            state.listenRoom();
             if (input.value !== "") {
               if (!cs.ocupada) {
                 params.goTo("/compartiCodigo");
@@ -173,16 +175,21 @@ export function initEmpezar(params) {
         state.accessToRoom((err) => {
           if (err) console.error("Hubo un error en el signIn");
           state.pushJugada();
+          state.listenRoom();
           if (input.value !== "") {
-            if (!cs.ocupada) {
-              console.log("no ocupada", cs.players);
+            const currentState = localStorage.getItem("state");
+            if (currentState) {
+              const localData = JSON.parse(currentState);
+              if (!localData.ocupada) {
+                console.log("no ocupada", cs.players);
 
-              params.goTo("/compartiCodigo");
+                params.goTo("/compartiCodigo");
+              } else {
+                alert("La sala ya esta ocupada");
+              }
             } else {
-              alert("La sala ya esta ocupada");
+              alert("Debe ingresar un nombre para continuar");
             }
-          } else {
-            alert("Debe ingresar un nombre para continuar");
           }
         });
         // state.pushJugada();

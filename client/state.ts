@@ -180,7 +180,6 @@ const state = {
         cs.rtdbRoomId = data.rtdbRoomId;
         cs.currentGame.rtdbRoomId = data.rtdbRoomId;
         this.setState(cs);
-        this.listenRoom();
         if (callback) {
           callback();
         }
@@ -215,16 +214,17 @@ const state = {
   },
   pushJugada() {
     const cs = this.getState();
-
-    fetch(API_BASE_URL + "/jugada", {
-      method: "post",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        currentGame: cs.currentGame,
-      }),
-    });
+    if (cs.players < 2) {
+      fetch(API_BASE_URL + "/jugada", {
+        method: "post",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          currentGame: cs.currentGame,
+        }),
+      });
+    }
   },
   setState(newState) {
     this.data = newState;
