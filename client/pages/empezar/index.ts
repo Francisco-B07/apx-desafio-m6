@@ -144,6 +144,7 @@ export function initEmpezar(params) {
   botonEl?.addEventListener("click", () => {
     // Seteo el nombre
     state.setNombre(input.value);
+
     // Reviso el state
     const cs = state.getState();
 
@@ -154,18 +155,39 @@ export function initEmpezar(params) {
         console.log("room vacio");
         if (err) console.error("Hubo un error en el signIn");
         state.askNewRoom(() => {
-          state.accessToRoom();
+          state.accessToRoom((err) => {
+            if (err) console.error("Hubo un error en el signIn");
+            state.pushJugada();
+            if (input.value !== "") {
+              if (!cs.ocupada) {
+                params.goTo("/compartiCodigo");
+              } else {
+                alert("La sala ya esta ocupada");
+              }
+            } else {
+            }
+          });
         });
       } else {
         console.log("room NO vacio");
-        state.accessToRoom();
+        state.accessToRoom((err) => {
+          if (err) console.error("Hubo un error en el signIn");
+          state.pushJugada();
+          if (input.value !== "") {
+            if (!cs.ocupada) {
+              console.log("no ocupada", cs.players);
+
+              params.goTo("/compartiCodigo");
+            } else {
+              alert("La sala ya esta ocupada");
+            }
+          } else {
+            alert("Debe ingresar un nombre para continuar");
+          }
+        });
+        // state.pushJugada();
       }
     });
-    if (input.value !== "") {
-      params.goTo("/compartiCodigo");
-    } else {
-      alert("Debe ingresar un nombre para continuar");
-    }
   });
 
   return div;

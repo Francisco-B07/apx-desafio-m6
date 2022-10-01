@@ -52,27 +52,10 @@ app.post("/signin", function (req, res) {
     });
 });
 
-// app.post("/auth", (req, res) => {
-//   const { nombre } = req.body;
-//   playersCollection
-//     .where("nombre", "==", nombre)
-//     .get()
-//     .then((searchResponse) => {
-//       if (searchResponse.empty) {
-//         res.status(404).json({
-//           message: "not found",
-//         });
-//       } else {
-//         res.json({
-//           id: searchResponse.docs[0].id,
-//         });
-//       }
-//     });
-// });
-
 // CREAR ROOM
 app.post("/rooms", (req, res) => {
   const { playerId } = req.body;
+
   playersCollection
     .doc(playerId.toString())
     .get()
@@ -82,7 +65,6 @@ app.post("/rooms", (req, res) => {
 
         roomRef
           .set({
-            messages: [],
             owner: playerId,
           })
           .then(() => {
@@ -104,6 +86,26 @@ app.post("/rooms", (req, res) => {
           message: "no existis",
         });
       }
+    });
+});
+
+// CARGAR JUGADA EN RTDB
+app.post("/jugada", (req, res) => {
+  const rtdbRoomId = req.body.currentGame.rtdbRoomId;
+  const playerId = req.body.currentGame.playerId;
+  const roomRef = rtdb.ref("rooms/" + rtdbRoomId + "/currentGame/" + playerId);
+
+  roomRef
+    .set({
+      choice: req.body.currentGame.choice,
+      nombre: req.body.currentGame.nombre,
+      online: req.body.currentGame.online,
+      start: req.body.currentGame.start,
+    })
+    .then((data) => {
+      res.json({
+        message: "ok",
+      });
     });
 });
 
