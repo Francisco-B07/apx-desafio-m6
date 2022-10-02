@@ -1,13 +1,78 @@
-import { stat } from "fs";
-import { stringify } from "querystring";
+import { Router } from "@vaadin/router";
 import { state } from "../../state";
-export function initEmpezar(params) {
-  const div = document.createElement("div");
 
-  const imageURL = require("url:../../img/fondo.svg");
+class Empezar extends HTMLElement {
+  shadow: ShadowRoot;
+  connectedCallback() {
+    this.render();
 
-  var style = document.createElement("style");
-  style.textContent = `
+    const inputEl = this.shadow.querySelector(".ingresar-nombre");
+    const input = inputEl as any;
+
+    var botonEl = this.shadow.querySelector(".container-boton");
+    botonEl?.addEventListener("click", () => {
+      // Seteo el nombre
+      state.setNombre(input.value);
+
+      // Reviso el state
+      const cs = state.getState();
+
+      // Si no tiene codigo de Room
+
+      state.signIn((err) => {
+        if (cs.roomNuevo) {
+          if (err) console.error("Hubo un error en el signIn");
+
+          state.askNewRoom(() => {
+            state.accessToRoom((err) => {
+              if (err) console.error("Hubo un error en el accessToRoom");
+              state.pushJugada();
+              state.listenRoom();
+              if (input.value !== "") {
+                if (!cs.ocupada) {
+                  state.setOnline(true);
+                  Router.go("/compartiCodigo");
+                } else {
+                  alert("La sala ya esta ocupada");
+                }
+              } else {
+              }
+            });
+          });
+        } else {
+          state.accessToRoom((err) => {
+            if (err) console.error("Hubo un error en el accessToRoom");
+
+            state.pushJugada();
+            state.listenRoom((err) => {
+              if (err) console.error("Hubo un error en el listenRoom");
+              if (input.value !== "") {
+                const currentState = localStorage.getItem("state");
+                if (currentState) {
+                  const localData = JSON.parse(currentState);
+                  if (!localData.ocupada) {
+                    state.setOnline(true);
+                    Router.go("/compartiCodigo");
+                  } else {
+                    alert("La sala ya esta ocupada");
+                  }
+                } else {
+                  alert("Debe ingresar un nombre para continuar");
+                }
+              }
+            });
+          });
+        }
+      });
+    });
+  }
+  render() {
+    this.shadow = this.attachShadow({ mode: "open" });
+    const div = document.createElement("div");
+    const imageURL = require("url:../../img/fondo.svg");
+
+    var style = document.createElement("style");
+    style.textContent = `
         span{
           color: #91CCAF;
           font-size: 80px;
@@ -37,11 +102,11 @@ export function initEmpezar(params) {
         }
 
         .titulo{
-          padding: 65px 34px 74px 34px;          
+          padding: 25px 34px 74px 34px;          
         }
         @media (max-width: 370px){
           .titulo{
-            padding: 50px 25px 74px 25px;          
+            padding: 10px 25px 74px 25px;          
           }
 
         }
@@ -100,7 +165,7 @@ export function initEmpezar(params) {
         .container-figuras{
           position: absolute;
           left: 15%;
-          top: 87%;
+          top: 80%;
         }
         @media (max-width: 370px){
           .container-figuras{
@@ -111,12 +176,12 @@ export function initEmpezar(params) {
         @media (min-width: 600px){
           .container-figuras{
             left: 40%;
-            top: 87%;
+            top: 80%;
           }
         }              
     `;
 
-  div.innerHTML = `
+    div.innerHTML = `
   <div class="container">
     <div class="container-page">
       <div class="titulo">    
@@ -135,68 +200,8 @@ export function initEmpezar(params) {
     </div>
   </div>
   `;
-
-  div.append(style);
-
-  const inputEl = div.querySelector(".ingresar-nombre");
-  const input = inputEl as any;
-
-  var botonEl = div.querySelector(".container-boton");
-  botonEl?.addEventListener("click", () => {
-    // Seteo el nombre
-    state.setNombre(input.value);
-
-    // Reviso el state
-    const cs = state.getState();
-
-    // Si no tiene codigo de Room
-
-    state.signIn((err) => {
-      if (cs.roomNuevo) {
-        if (err) console.error("Hubo un error en el signIn");
-
-        state.askNewRoom(() => {
-          state.accessToRoom((err) => {
-            if (err) console.error("Hubo un error en el accessToRoom");
-            state.pushJugada();
-            state.listenRoom();
-            if (input.value !== "") {
-              if (!cs.ocupada) {
-                state.setOnline(true);
-                params.goTo("/compartiCodigo");
-              } else {
-                alert("La sala ya esta ocupada");
-              }
-            } else {
-            }
-          });
-        });
-      } else {
-        state.accessToRoom((err) => {
-          if (err) console.error("Hubo un error en el accessToRoom");
-
-          state.pushJugada();
-          state.listenRoom((err) => {
-            if (err) console.error("Hubo un error en el listenRoom");
-            if (input.value !== "") {
-              const currentState = localStorage.getItem("state");
-              if (currentState) {
-                const localData = JSON.parse(currentState);
-                if (!localData.ocupada) {
-                  state.setOnline(true);
-                  params.goTo("/compartiCodigo");
-                } else {
-                  alert("La sala ya esta ocupada");
-                }
-              } else {
-                alert("Debe ingresar un nombre para continuar");
-              }
-            }
-          });
-        });
-      }
-    });
-  });
-
-  return div;
+    this.shadow.appendChild(style);
+    this.shadow.appendChild(div);
+  }
 }
+customElements.define("empezar-component", Empezar);

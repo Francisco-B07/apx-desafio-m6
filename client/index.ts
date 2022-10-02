@@ -1,14 +1,28 @@
-import { initRouter } from "./router";
+// import { router } from "./router";
+// import { Router } from "@vaadin/router";
+// IMPORT DE COMPONENTES
 import { initText } from "./components/text";
 import { initButton } from "./components/button";
 import { initTijera } from "./components/tijera";
 import { initPiedra } from "./components/piedra";
 import { initPapel } from "./components/papel";
 import { initPiedraPapelTijera } from "./components/piedra-papel-tijera";
-import { state } from "./state";
 import { initEstrella } from "./components/estrella";
+
+// IMPORT DE PAGES
+import "./pages/welcome/index";
+import "./pages/empezar/index";
+import "./pages/ingresar-sala/index";
+import "./pages/comparti-codigo/index";
+import "./pages/instructions/index";
+import "./pages/sala-de-espera/index";
+import "./pages/play/index";
+import "./pages/result/index";
+
+// OTROS IMPORTS
+import "./router";
+import { state } from "./state";
 import { Router } from "express";
-import { initCompartiCodigo } from "./pages/comparti-codigo";
 
 (function () {
   initEstrella();
@@ -18,9 +32,8 @@ import { initCompartiCodigo } from "./pages/comparti-codigo";
   initPiedra();
   initPapel();
   initPiedraPapelTijera();
-  initCompartiCodigo();
   const root = document.querySelector(".root")!;
-  initRouter(root);
+  // initRouter(root);
   state.init();
 
   // ---------------------------------------------------

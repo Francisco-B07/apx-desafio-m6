@@ -1,80 +1,14 @@
-import { initWelcome } from "./pages/welcome";
-import { initInstructions } from "./pages/instructions";
-import { initPlay } from "./pages/play";
-import { initResult } from "./pages/result";
-import { initIngresarSala } from "./pages/ingresar-sala";
-import { initEmpezar } from "./pages/empezar";
-import { initCompartiCodigo } from "./pages/comparti-codigo";
-import { initSalaDeEspera } from "./pages/sala-de-espera";
-const routes = [
-  {
-    path: /\/welcome/,
-    component: initWelcome,
-  },
-  {
-    path: /\/ingresarSala/,
-    component: initIngresarSala,
-  },
-  {
-    path: /\/empezar/,
-    component: initEmpezar,
-  },
-  {
-    path: /\/compartiCodigo/,
-    component: initCompartiCodigo,
-  },
-  {
-    path: /\/salaDeEspera/,
-    component: initSalaDeEspera,
-  },
-  {
-    path: /\/instructions/,
-    component: initInstructions,
-  },
-  {
-    path: /\/play/,
-    component: initPlay,
-  },
-  {
-    path: /\/result/,
-    component: initResult,
-  },
-];
+import { Router } from "@vaadin/router";
 
-const BASE_PATH = "/juego-piedra-papel-o-tijera";
-
-function isGithubPages() {
-  return location.host.includes("github.io");
-}
-
-export function initRouter(container: Element) {
-  function goTo(path) {
-    const completePath = isGithubPages() ? BASE_PATH + path : path;
-
-    history.pushState({}, "", completePath);
-    handleRoute(completePath);
-  }
-  function handleRoute(route) {
-    const newRoute = isGithubPages() ? route.replace(BASE_PATH, "") : route;
-    for (const r of routes) {
-      if (r.path.test(newRoute)) {
-        const el = r.component({ goTo: goTo });
-        if (container.firstChild) {
-          container.firstChild.remove();
-        }
-        container.appendChild(el);
-      }
-    }
-  }
-  if (
-    location.pathname == "/juego-piedra-papel-o-tijera/" ||
-    location.pathname == "/"
-  ) {
-    goTo("/welcome");
-  } else {
-    handleRoute(location.pathname);
-  }
-  window.onpopstate = function () {
-    handleRoute(location.pathname);
-  };
-}
+const router = new Router(document.querySelector(".root"));
+router.setRoutes([
+  { path: "/", component: "welcome-component" },
+  { path: "/welcome", component: "welcome-component" },
+  { path: "/empezar", component: "empezar-component" },
+  { path: "/ingresarSala", component: "ingresar-sala-component" },
+  { path: "/compartiCodigo", component: "comparti-codigo-component" },
+  { path: "/instructions", component: "instructions-component" },
+  { path: "/salaDeEspera", component: "sala-de-espera-component" },
+  { path: "/play", component: "play-component" },
+  { path: "/result", component: "result-component" },
+]);
