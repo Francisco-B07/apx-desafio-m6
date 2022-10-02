@@ -128,9 +128,9 @@ export function initInstructions(params) {
         <div class="score">
           <div class="player">
             <div class="nombre1">
-              <span class="">${localData.nombre}:</span>
+              <span class="">${localData.currentGame.nombre}:</span>
             </div>
-            <span class="score1">${localData.score}</span>
+            <span class="score1">${localData.currentGame.score}</span>
           </div>
           <div class="player">
             <div class="nombre2">

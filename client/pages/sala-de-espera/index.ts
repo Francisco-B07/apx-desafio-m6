@@ -1,5 +1,16 @@
 import { state } from "../../state";
+
 export function initSalaDeEspera(params) {
+  class salaDeEspera extends HTMLElement {
+    shadow: ShadowRoot;
+    constructor() {
+      super();
+      this.shadow = this.attachShadow({ mode: "open" });
+      this.render();
+    }
+    render() {}
+  }
+
   const div = document.createElement("div");
   const imageURL = require("url:../../img/fondo.svg");
 

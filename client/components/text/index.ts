@@ -7,8 +7,8 @@ export function initText() {
       super();
       this.shadow = this.attachShadow({ mode: "open" });
 
-      if (this.tags.includes(this.getAttribute("tag"))) {
-        this.tag = this.getAttribute("tag");
+      if (this.tags.includes(this.getAttribute("tag")!)) {
+        this.tag = this.getAttribute("tag")!;
       }
 
       const style = document.createElement("style");

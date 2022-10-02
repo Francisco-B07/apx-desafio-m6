@@ -2,9 +2,9 @@ import { initWelcome } from "./pages/welcome";
 import { initInstructions } from "./pages/instructions";
 import { initPlay } from "./pages/play";
 import { initResult } from "./pages/result";
-import { initIngresarSala } from "./pages/ingresarSala";
+import { initIngresarSala } from "./pages/ingresar-sala";
 import { initEmpezar } from "./pages/empezar";
-import { initCompartiCodigo } from "./pages/compartiCodigo";
+import { initCompartiCodigo } from "./pages/comparti-codigo";
 import { initSalaDeEspera } from "./pages/sala-de-espera";
 const routes = [
   {

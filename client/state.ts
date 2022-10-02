@@ -1,50 +1,40 @@
 const API_BASE_URL = "http://localhost:3000";
 
 import { rtdb } from "./rtdb";
-
-// Esta función de Lodash, cuando le pasas un objeto de objetos lo trata como si fuese un array
 import map from "lodash/map";
 
 type Jugada = "piedra" | "papel" | "tijera";
-type Game = {
-  computerPlay: Jugada;
-  myPlay: Jugada;
+type Oponente = {
+  nombre: string;
+  choice: string;
+  start: boolean;
+  score: number;
+  online: boolean;
 };
-
-// type Message = {
-//   from: string;
-//   message: string;
-// };
 
 const state = {
   data: {
-    roomNuevo: false,
-    nombre: "",
-    score: 0,
-    oponente: {
-      nombre: "",
-      choice: "",
-      start: false,
-      score: 0,
-      online: false,
-    },
-
-    scoreRival: 0,
     playerId: "",
     roomId: "",
     rtdbRoomId: "",
+    oponente: {
+      nombre: "",
+      online: false,
+      start: false,
+      choice: "",
+      score: 0,
+    },
+    currentGame: {
+      nombre: "",
+      online: false,
+      start: false,
+      choice: "",
+      score: 0,
+    },
     ocupada: false,
     players: 0,
     iniciar: false,
-    currentGame: {
-      rtdbRoomId: "",
-      nombre: "",
-      playerId: "",
-      choice: "",
-      start: false,
-      score: 0,
-      online: false,
-    },
+    roomNuevo: false,
   },
   listeners: [],
 
@@ -62,60 +52,43 @@ const state = {
   setNombre(nombre: string) {
     const cs = this.getState();
     cs.currentGame.nombre = nombre;
-    cs.nombre = nombre;
     this.setState(cs);
   },
   setRoomId(roomId: string) {
     const cs = this.getState();
-
     cs.roomId = roomId;
     this.setState(cs);
   },
   setNuevoRoom(roomNuevo: boolean) {
     const cs = this.getState();
-
     cs.roomNuevo = roomNuevo;
     this.setState(cs);
   },
   setCantPlayers(players: number) {
     const cs = this.getState();
-
     cs.players = players;
     this.setState(cs);
   },
   setSalaOcupada(ocupada: boolean) {
     const cs = this.getState();
-
     cs.ocupada = ocupada;
     this.setState(cs);
   },
-  setOponente(oponente: any) {
+  setOponente(oponente: Oponente) {
     const cs = this.getState();
-
-    cs.oponente.nombre = oponente.nombre;
-    cs.oponente.choice = oponente.choice;
-    cs.oponente.start = oponente.start;
-    cs.oponente.score = oponente.score;
-    cs.oponente.online = oponente.online;
-
+    cs.oponente.oponente;
     this.setState(cs);
   },
 
   setScore(score: number) {
     const cs = this.getState();
-
     cs.currentGame.score = score;
-
     this.setState(cs);
   },
   setOnline(online: boolean) {
     const cs = this.getState();
-
     cs.currentGame.online = online;
-
     this.setState(cs);
-    this.pushJugada();
-    this.listenRoom();
   },
   setStart(start: boolean) {
     const cs = this.getState();
@@ -124,7 +97,6 @@ const state = {
 
     this.setState(cs);
     this.pushJugada();
-    this.listenRoom();
   },
 
   inicializarStateNewRoom() {
@@ -133,6 +105,7 @@ const state = {
       choice: "",
       start: false,
       score: 0,
+      online: false,
     });
     this.setSalaOcupada(false);
     this.setCantPlayers(0);
@@ -179,20 +152,20 @@ const state = {
 
   signIn(callback) {
     const cs = this.getState();
-    if (cs.nombre) {
+    if (cs.currentGame.nombre) {
       fetch(API_BASE_URL + "/signin", {
         method: "post",
         headers: {
           "content-type": "application/json",
         },
-        body: JSON.stringify({ nombre: cs.nombre }),
+        body: JSON.stringify({ nombre: cs.currentGame.nombre }),
       })
         .then((res) => {
           return res.json();
         })
         .then((data) => {
           cs.playerId = data.id;
-          cs.currentGame.playerId = data.id;
+
           this.setState(cs);
           callback();
         });
@@ -237,7 +210,7 @@ const state = {
       })
       .then((data) => {
         cs.rtdbRoomId = data.rtdbRoomId;
-        cs.currentGame.rtdbRoomId = data.rtdbRoomId;
+
         this.setState(cs);
         if (callback) {
           callback();
@@ -246,8 +219,6 @@ const state = {
   },
   pushJugada() {
     const cs = this.getState();
-    // console.log("desde el push", cs.currentGame);
-
     if (cs.players < 2) {
       fetch(API_BASE_URL + "/jugada", {
         method: "post",
@@ -256,6 +227,8 @@ const state = {
         },
         body: JSON.stringify({
           currentGame: cs.currentGame,
+          playerId: cs.playerId,
+          rtdbRoomId: cs.rtdbRoomId,
         }),
       });
     }
@@ -280,15 +253,20 @@ const state = {
         const jugadorUno = currentGame[0].nombre;
         const jugadorDos = currentGame[1].nombre;
 
-        if (cs.nombre != jugadorUno && cs.nombre != jugadorDos) {
+        if (
+          cs.currentGame.nombre != jugadorUno &&
+          cs.currentGame.nombre != jugadorDos
+        ) {
           this.setSalaOcupada(true);
         } else {
           this.setSalaOcupada(false);
         }
-        if (cs.nombre == jugadorUno) {
+        if (cs.currentGame.nombre == jugadorUno) {
           this.setOponente(currentGame[1]);
+          console.log("oponente", cs.oponente);
         } else {
           this.setOponente(currentGame[0]);
+          console.log("oponente", cs.oponente);
         }
       }
     });

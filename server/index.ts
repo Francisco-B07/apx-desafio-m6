@@ -91,8 +91,8 @@ app.post("/rooms", (req, res) => {
 
 // CARGAR JUGADA EN RTDB
 app.post("/jugada", (req, res) => {
-  const rtdbRoomId = req.body.currentGame.rtdbRoomId;
-  const playerId = req.body.currentGame.playerId;
+  const rtdbRoomId = req.body.rtdbRoomId;
+  const playerId = req.body.playerId;
   const roomRef = rtdb.ref("rooms/" + rtdbRoomId + "/currentGame/" + playerId);
 
   roomRef

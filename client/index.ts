@@ -8,6 +8,7 @@ import { initPiedraPapelTijera } from "./components/piedra-papel-tijera";
 import { state } from "./state";
 import { initEstrella } from "./components/estrella";
 import { Router } from "express";
+import { initCompartiCodigo } from "./pages/comparti-codigo";
 
 (function () {
   initEstrella();
@@ -17,6 +18,7 @@ import { Router } from "express";
   initPiedra();
   initPapel();
   initPiedraPapelTijera();
+  initCompartiCodigo();
   const root = document.querySelector(".root")!;
   initRouter(root);
   state.init();

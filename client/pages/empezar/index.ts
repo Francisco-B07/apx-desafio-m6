@@ -145,7 +145,6 @@ export function initEmpezar(params) {
   botonEl?.addEventListener("click", () => {
     // Seteo el nombre
     state.setNombre(input.value);
-    state.setOnline(false);
 
     // Reviso el state
     const cs = state.getState();
@@ -163,6 +162,7 @@ export function initEmpezar(params) {
             state.listenRoom();
             if (input.value !== "") {
               if (!cs.ocupada) {
+                state.setOnline(true);
                 params.goTo("/compartiCodigo");
               } else {
                 alert("La sala ya esta ocupada");
@@ -184,7 +184,7 @@ export function initEmpezar(params) {
                 const localData = JSON.parse(currentState);
                 if (!localData.ocupada) {
                   state.setOnline(true);
-                  params.goTo("/instructions");
+                  params.goTo("/compartiCodigo");
                 } else {
                   alert("La sala ya esta ocupada");
                 }
