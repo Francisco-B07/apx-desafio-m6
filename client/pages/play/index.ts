@@ -20,15 +20,17 @@ export function initPlay(params) {
 
   const intervalId = setInterval(() => {
     const contador = div.querySelector(".contador");
-    contador.textContent = counter.toString();
-    counter--;
+    if (contador) {
+      contador.textContent = counter.toString();
+      counter--;
+    }
 
     const elegido = div.querySelector(".seleccionado");
     if (counter == -1 && elegido != null) {
       elegido.classList.add("jugado");
-      div.querySelector(".no-seleccionado").remove();
-      div.querySelector(".no-seleccionado").remove();
-      div.querySelector(".container-contador").remove();
+      div.querySelector(".no-seleccionado")?.remove();
+      div.querySelector(".no-seleccionado")?.remove();
+      div.querySelector(".container-contador")?.remove();
       const contenedorPage = div.querySelector(".container");
       const computerSelect = document.createElement("div");
       computerSelect.innerHTML = `
@@ -36,7 +38,7 @@ export function initPlay(params) {
       <${this.computerPlay}-el></${this.computerPlay}-el>
       </div>
       `;
-      contenedorPage.appendChild(computerSelect);
+      contenedorPage?.appendChild(computerSelect);
       state.whoWins(this.myPlay, this.computerPlay);
 
       const intervalId2 = setInterval(() => {
@@ -225,37 +227,37 @@ export function initPlay(params) {
   var papel = div.querySelector(".papel");
   var tijera = div.querySelector(".tijera");
 
-  piedra.addEventListener("click", () => {
+  piedra?.addEventListener("click", () => {
     this.myPlay = "piedra";
-    piedra.classList.remove("no-seleccionado");
-    papel.classList.remove("seleccionado");
-    tijera.classList.remove("seleccionado");
+    piedra?.classList.remove("no-seleccionado");
+    papel?.classList.remove("seleccionado");
+    tijera?.classList.remove("seleccionado");
 
-    piedra.classList.add("seleccionado");
-    papel.classList.add("no-seleccionado");
-    tijera.classList.add("no-seleccionado");
+    piedra?.classList.add("seleccionado");
+    papel?.classList.add("no-seleccionado");
+    tijera?.classList.add("no-seleccionado");
   });
 
-  papel.addEventListener("click", () => {
+  papel?.addEventListener("click", () => {
     this.myPlay = "papel";
-    piedra.classList.remove("seleccionado");
-    papel.classList.remove("no-seleccionado");
-    tijera.classList.remove("seleccionado");
+    piedra?.classList.remove("seleccionado");
+    papel?.classList.remove("no-seleccionado");
+    tijera?.classList.remove("seleccionado");
 
-    piedra.classList.add("no-seleccionado");
-    papel.classList.add("seleccionado");
-    tijera.classList.add("no-seleccionado");
+    piedra?.classList.add("no-seleccionado");
+    papel?.classList.add("seleccionado");
+    tijera?.classList.add("no-seleccionado");
   });
 
-  tijera.addEventListener("click", () => {
+  tijera?.addEventListener("click", () => {
     this.myPlay = "tijera";
-    piedra.classList.remove("seleccionado");
-    papel.classList.remove("seleccionado");
-    tijera.classList.remove("no-seleccionado");
+    piedra?.classList.remove("seleccionado");
+    papel?.classList.remove("seleccionado");
+    tijera?.classList.remove("no-seleccionado");
 
-    piedra.classList.add("no-seleccionado");
-    papel.classList.add("no-seleccionado");
-    tijera.classList.add("seleccionado");
+    piedra?.classList.add("no-seleccionado");
+    papel?.classList.add("no-seleccionado");
+    tijera?.classList.add("seleccionado");
   });
 
   return div;

@@ -1,5 +1,5 @@
 import { state } from "../../state";
-export function initInstructions(params) {
+export function initSalaDeEspera(params) {
   const div = document.createElement("div");
   const imageURL = require("url:../../img/fondo.svg");
 
@@ -17,7 +17,6 @@ export function initInstructions(params) {
           align-items: center;
         }
         .container-page{
-          max-width: 400px;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -80,26 +79,27 @@ export function initInstructions(params) {
           text-align: right;
           color: #000000;
         }
-
+        
         .instrucciones{
-          padding: 0px 27px 0px 27px;
+          padding: 70px 27px 0px 27px;
           text-align: center;
         }
-
+        
         @media (max-width: 370px){
           .instrucciones{
-          padding: 0px 27px 0px 27px;
-        }
-        }
-
-        .container-boton{
-          width: 322px;
-        }
-        @media (max-width: 370px){
-          .container-boton{
-            width: 290px;
+          padding: 70px 27px 0px 27px;
           }
         }
+
+        .codigo{
+          font-style: normal;
+          font-weight: 700;
+          font-size: 48px;
+          line-height: 100%;
+          text-align: center;
+          color: #000000;
+        }
+
 
         .container-figuras{
           position: absolute;
@@ -119,12 +119,14 @@ export function initInstructions(params) {
           }
         }
 
+
+        
     `;
 
   div.innerHTML = `
   <div class="container">
     <div class="container-page">
-    <div class="header">
+      <div class="header">
         <div class="score">
           <div class="player">
             <div class="nombre1">
@@ -145,27 +147,38 @@ export function initInstructions(params) {
         </div>
       </div>
       <div class="instrucciones">    
-        <text-el tag="p"> Presioná jugar
-        y elegí: piedra, papel o tijera antes de que pasen los 3 segundos.</text-el>
-        </div>
-        <div class="container-boton">
-          <button-el >¡Jugar!</button-el>
-        </div>
-        <div class="container-figuras">      
+        <text-el tag="p"> Esperando a que <b>${localData.oponente.nombre}</b> presione ¡Jugar!...</text-el>
+             
+        
+      </div>
+       <div class="container-figuras">      
         <piedra-papel-tijera></piedra-papel-tijera>
-        </div>
+      </div>
+
     </div>
   </div>
   `;
 
   div.append(style);
+  state.pushJugada();
+  state.listenRoom();
 
-  var botonEl = div.querySelector(".container-boton");
-  botonEl?.addEventListener("click", () => {
-    // const cs = state.getState();
-    state.setStart(true);
-    params.goTo("/salaDeEspera");
+  if (localData.oponente.start) {
+    state.pushJugada();
+    state.listenRoom();
+    params.goTo("/play");
+  }
+
+  state.subscribe(() => {
+    if (localData.oponente.start) params.goTo("/play");
   });
+  // state.subscribe(() => {
+  //   const cs = state.getState();
+  //   if (cs.players == 2) {
+  //     console.log("opo", cs.oponente);
 
+  //     params.goTo("/instructions");
+  //   }
+  // });
   return div;
 }

@@ -2,7 +2,7 @@ import { state } from "../../state";
 export function initCompartiCodigo(params) {
   const div = document.createElement("div");
   const imageURL = require("url:../../img/fondo.svg");
-  const cs = state.getState();
+
   const currentState = localStorage.getItem("state");
   const localData = currentState ? JSON.parse(currentState) : "";
 
@@ -164,8 +164,7 @@ export function initCompartiCodigo(params) {
 
   state.subscribe(() => {
     const cs = state.getState();
-
-    if (cs.players == 2) {
+    if (cs.players == 2 || cs.oponente.online == true) {
       params.goTo("/instructions");
     }
   });

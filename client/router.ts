@@ -5,6 +5,7 @@ import { initResult } from "./pages/result";
 import { initIngresarSala } from "./pages/ingresarSala";
 import { initEmpezar } from "./pages/empezar";
 import { initCompartiCodigo } from "./pages/compartiCodigo";
+import { initSalaDeEspera } from "./pages/sala-de-espera";
 const routes = [
   {
     path: /\/welcome/,
@@ -21,6 +22,10 @@ const routes = [
   {
     path: /\/compartiCodigo/,
     component: initCompartiCodigo,
+  },
+  {
+    path: /\/salaDeEspera/,
+    component: initSalaDeEspera,
   },
   {
     path: /\/instructions/,

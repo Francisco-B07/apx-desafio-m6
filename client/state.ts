@@ -26,7 +26,9 @@ const state = {
       choice: "",
       start: false,
       score: 0,
+      online: false,
     },
+
     scoreRival: 0,
     playerId: "",
     roomId: "",
@@ -41,6 +43,7 @@ const state = {
       choice: "",
       start: false,
       score: 0,
+      online: false,
     },
   },
   listeners: [],
@@ -89,7 +92,11 @@ const state = {
   setOponente(oponente: any) {
     const cs = this.getState();
 
-    cs.oponente = oponente;
+    cs.oponente.nombre = oponente.nombre;
+    cs.oponente.choice = oponente.choice;
+    cs.oponente.start = oponente.start;
+    cs.oponente.score = oponente.score;
+    cs.oponente.online = oponente.online;
 
     this.setState(cs);
   },
@@ -100,6 +107,24 @@ const state = {
     cs.currentGame.score = score;
 
     this.setState(cs);
+  },
+  setOnline(online: boolean) {
+    const cs = this.getState();
+
+    cs.currentGame.online = online;
+
+    this.setState(cs);
+    this.pushJugada();
+    this.listenRoom();
+  },
+  setStart(start: boolean) {
+    const cs = this.getState();
+
+    cs.currentGame.start = start;
+
+    this.setState(cs);
+    this.pushJugada();
+    this.listenRoom();
   },
 
   inicializarStateNewRoom() {
@@ -112,6 +137,7 @@ const state = {
     this.setSalaOcupada(false);
     this.setCantPlayers(0);
     this.setScore(0);
+    this.setOnline(false);
   },
   whoWins(myPlay: Jugada, computerPlay: Jugada) {
     const currentState = this.getState();
@@ -152,8 +178,6 @@ const state = {
   },
 
   signIn(callback) {
-    console.log("entreeee");
-
     const cs = this.getState();
     if (cs.nombre) {
       fetch(API_BASE_URL + "/signin", {
@@ -221,9 +245,8 @@ const state = {
       });
   },
   pushJugada() {
-    console.log("inicia push");
-
     const cs = this.getState();
+    // console.log("desde el push", cs.currentGame);
 
     if (cs.players < 2) {
       fetch(API_BASE_URL + "/jugada", {
@@ -236,7 +259,6 @@ const state = {
         }),
       });
     }
-    console.log("termina push");
   },
   listenRoom(callback?) {
     const cs = this.getState();
@@ -248,8 +270,6 @@ const state = {
 
       const rtdbRoom = snap.val();
       const currentGame = map(rtdbRoom.currentGame);
-
-      console.log("list", currentGame);
 
       const players = currentGame.length;
       this.setCantPlayers(players);
@@ -267,14 +287,12 @@ const state = {
         }
         if (cs.nombre == jugadorUno) {
           this.setOponente(currentGame[1]);
-          console.log("oponente", cs.oponente);
         } else {
           this.setOponente(currentGame[0]);
-          console.log(cs.oponente);
         }
       }
-      if (callback) callback();
     });
+    if (callback) callback();
   },
 
   setState(newState) {
