@@ -21,7 +21,12 @@ const state = {
     roomNuevo: false,
     nombre: "",
     score: 0,
-    nombreRival: "",
+    oponente: {
+      nombre: "",
+      choice: "",
+      start: false,
+      score: 0,
+    },
     scoreRival: 0,
     playerId: "",
     roomId: "",
@@ -34,7 +39,6 @@ const state = {
       nombre: "",
       playerId: "",
       choice: "",
-      online: false,
       start: false,
       score: 0,
     },
@@ -82,10 +86,10 @@ const state = {
     cs.ocupada = ocupada;
     this.setState(cs);
   },
-  setNombreRival(nombreRival: number) {
+  setOponente(oponente: any) {
     const cs = this.getState();
 
-    cs.nombreRival = nombreRival;
+    cs.oponente = oponente;
 
     this.setState(cs);
   },
@@ -97,26 +101,17 @@ const state = {
 
     this.setState(cs);
   },
-  setScoreRival(scoreRival: number) {
-    const cs = this.getState();
 
-    cs.scoreRival = scoreRival;
-
-    this.setState(cs);
-  },
-  setIniciar(iniciar: boolean) {
-    const cs = this.getState();
-
-    cs.iniciar = iniciar;
-
-    this.setState(cs);
-  },
   inicializarStateNewRoom() {
-    this.setNombreRival("-");
+    this.setOponente({
+      nombre: "",
+      choice: "",
+      start: false,
+      score: 0,
+    });
     this.setSalaOcupada(false);
     this.setCantPlayers(0);
     this.setScore(0);
-    this.setScoreRival(0);
   },
   whoWins(myPlay: Jugada, computerPlay: Jugada) {
     const currentState = this.getState();
@@ -253,7 +248,7 @@ const state = {
 
       const rtdbRoom = snap.val();
       const currentGame = map(rtdbRoom.currentGame);
-      const score = map(rtdbRoom.score);
+
       console.log("list", currentGame);
 
       const players = currentGame.length;
@@ -271,14 +266,11 @@ const state = {
           this.setSalaOcupada(false);
         }
         if (cs.nombre == jugadorUno) {
-          this.setNombreRival(jugadorDos);
+          this.setOponente(currentGame[1]);
+          console.log("oponente", cs.oponente);
         } else {
-          this.setNombreRival(jugadorUno);
-        }
-        if (cs.nombre == score[0].nombre) {
-          this.setScoreRival(score[1].score);
-        } else {
-          this.setScoreRival(score[0].score);
+          this.setOponente(currentGame[0]);
+          console.log(cs.oponente);
         }
       }
       if (callback) callback();

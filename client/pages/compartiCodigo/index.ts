@@ -136,9 +136,9 @@ export function initCompartiCodigo(params) {
           </div>
           <div class="player">
             <div class="nombre2">
-              <span class="">${localData.nombreRival}:</span>
+              <span class="">${localData.oponente.nombre}:</span>
             </div>
-            <span class="score2">${localData.scoreRival}</span>
+            <span class="score2">${localData.oponente.score}</span>
           </div>
         </div>
         <div class="sala">
