@@ -93,14 +93,22 @@ app.post("/rooms", (req, res) => {
 app.post("/jugada", (req, res) => {
   const rtdbRoomId = req.body.currentGame.rtdbRoomId;
   const playerId = req.body.currentGame.playerId;
-  const roomRef = rtdb.ref("rooms/" + rtdbRoomId + "/currentGame/" + playerId);
+  const currentGameRef = rtdb.ref(
+    "rooms/" + rtdbRoomId + "/currentGame/" + playerId
+  );
+  const scoreRef = rtdb.ref("rooms/" + rtdbRoomId + "/score/" + playerId);
 
-  roomRef
+  currentGameRef.set({
+    choice: req.body.currentGame.choice,
+    nombre: req.body.currentGame.nombre,
+    online: req.body.currentGame.online,
+    start: req.body.currentGame.start,
+  });
+
+  scoreRef
     .set({
-      choice: req.body.currentGame.choice,
       nombre: req.body.currentGame.nombre,
-      online: req.body.currentGame.online,
-      start: req.body.currentGame.start,
+      score: req.body.currentGame.score,
     })
     .then((data) => {
       res.json({

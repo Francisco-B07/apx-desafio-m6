@@ -20,12 +20,15 @@ const state = {
   data: {
     roomNuevo: false,
     nombre: "",
+    score: 0,
     nombreRival: "",
+    scoreRival: 0,
     playerId: "",
     roomId: "",
     rtdbRoomId: "",
     ocupada: false,
     players: 0,
+    iniciar: false,
     currentGame: {
       rtdbRoomId: "",
       nombre: "",
@@ -33,6 +36,7 @@ const state = {
       choice: "",
       online: false,
       start: false,
+      score: 0,
     },
   },
   listeners: [],
@@ -78,15 +82,42 @@ const state = {
     cs.ocupada = ocupada;
     this.setState(cs);
   },
-  setNombreRival(nombreRival: boolean) {
+  setNombreRival(nombreRival: number) {
     const cs = this.getState();
 
     cs.nombreRival = nombreRival;
-    console.log(cs.nombreRival);
 
     this.setState(cs);
   },
 
+  setScore(score: number) {
+    const cs = this.getState();
+
+    cs.currentGame.score = score;
+
+    this.setState(cs);
+  },
+  setScoreRival(scoreRival: number) {
+    const cs = this.getState();
+
+    cs.scoreRival = scoreRival;
+
+    this.setState(cs);
+  },
+  setIniciar(iniciar: boolean) {
+    const cs = this.getState();
+
+    cs.iniciar = iniciar;
+
+    this.setState(cs);
+  },
+  inicializarStateNewRoom() {
+    this.setNombreRival("-");
+    this.setSalaOcupada(false);
+    this.setCantPlayers(0);
+    this.setScore(0);
+    this.setScoreRival(0);
+  },
   whoWins(myPlay: Jugada, computerPlay: Jugada) {
     const currentState = this.getState();
 
@@ -153,10 +184,7 @@ const state = {
   },
 
   askNewRoom(callback?) {
-    this.setNombreRival("");
-    this.setSalaOcupada(false);
-    this.setCantPlayers(0);
-
+    this.inicializarStateNewRoom();
     const cs = this.getState();
     if (cs.playerId) {
       fetch(API_BASE_URL + "/rooms", {
@@ -224,19 +252,18 @@ const state = {
       const cs = this.getState();
 
       const rtdbRoom = snap.val();
-      const playersList = map(rtdbRoom.currentGame);
-      console.log("list", playersList);
+      const currentGame = map(rtdbRoom.currentGame);
+      const score = map(rtdbRoom.score);
+      console.log("list", currentGame);
 
-      const players = playersList.length;
+      const players = currentGame.length;
       this.setCantPlayers(players);
 
       if (players < 2) {
         this.setSalaOcupada(false);
       } else {
-        const jugadorUno = playersList[0].nombre;
-        const jugadorDos = playersList[1].nombre;
-        console.log("1", jugadorUno);
-        console.log("2", jugadorDos);
+        const jugadorUno = currentGame[0].nombre;
+        const jugadorDos = currentGame[1].nombre;
 
         if (cs.nombre != jugadorUno && cs.nombre != jugadorDos) {
           this.setSalaOcupada(true);
@@ -247,6 +274,11 @@ const state = {
           this.setNombreRival(jugadorDos);
         } else {
           this.setNombreRival(jugadorUno);
+        }
+        if (cs.nombre == score[0].nombre) {
+          this.setScoreRival(score[1].score);
+        } else {
+          this.setScoreRival(score[0].score);
         }
       }
       if (callback) callback();

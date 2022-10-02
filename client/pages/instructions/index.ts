@@ -1,3 +1,4 @@
+import { state } from "../../state";
 export function initInstructions(params) {
   const div = document.createElement("div");
   const imageURL = require("url:../../img/fondo.svg");
@@ -78,6 +79,10 @@ export function initInstructions(params) {
   `;
 
   div.append(style);
+
+  // const cs = state.getState();
+  // cs.setIniciar(true);
+
   var botonEl = div.querySelector(".container-boton");
 
   botonEl?.addEventListener("click", () => {

@@ -156,7 +156,7 @@ export function initEmpezar(params) {
         if (err) console.error("Hubo un error en el signIn");
         state.askNewRoom(() => {
           state.accessToRoom((err) => {
-            if (err) console.error("Hubo un error en el signIn");
+            if (err) console.error("Hubo un error en el accessToRoom");
             state.pushJugada();
             state.listenRoom();
             if (input.value !== "") {
@@ -171,10 +171,10 @@ export function initEmpezar(params) {
         });
       } else {
         state.accessToRoom((err) => {
-          if (err) console.error("Hubo un error en el signIn");
+          if (err) console.error("Hubo un error en el accessToRoom");
           state.pushJugada();
           state.listenRoom((err) => {
-            if (err) console.error("Hubo un error en el signIn");
+            if (err) console.error("Hubo un error en el listenRoom");
             if (input.value !== "") {
               const currentState = localStorage.getItem("state");
               if (currentState) {
@@ -182,7 +182,7 @@ export function initEmpezar(params) {
                 if (!localData.ocupada) {
                   console.log("no ocupada", cs.players);
 
-                  params.goTo("/compartiCodigo");
+                  params.goTo("/instructions");
                 } else {
                   alert("La sala ya esta ocupada");
                 }
