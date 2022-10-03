@@ -269,4 +269,4 @@ class Play extends HTMLElement {
     this.shadow.appendChild(div);
   }
 }
-customElements.define("play-component", Play);
+customElements.define("eleccion-component", Play);

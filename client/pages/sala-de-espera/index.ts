@@ -7,18 +7,16 @@ class SalaDeEspera extends HTMLElement {
     this.shadow = this.attachShadow({ mode: "open" });
 
     this.render();
-    //   state.pushJugada();
-    // state.listenRoom();
-
-    // if (localData.oponente.start) {
-    //   state.pushJugada();
-    //   state.listenRoom();
-    //   params.goTo("/play");
-    // }
-
-    // state.subscribe(() => {
-    //   if (localData.oponente.start) params.goTo("/play");
-    // });
+    this.goPlay();
+    state.subscribe(() => {
+      this.goPlay();
+    });
+  }
+  goPlay() {
+    const cs = state.getState();
+    if (cs.oponente.start == true) {
+      Router.go("/play");
+    }
   }
   render() {
     const div = document.createElement("div");
@@ -150,9 +148,9 @@ class SalaDeEspera extends HTMLElement {
         <div class="score">
           <div class="player">
             <div class="nombre1">
-              <span class="">${localData.nombre}:</span>
+              <span class="">${localData.currentGame.nombre}:</span>
             </div>
-            <span class="score1">${localData.score}</span>
+            <span class="score1">${localData.currentGame.score}</span>
           </div>
           <div class="player">
             <div class="nombre2">

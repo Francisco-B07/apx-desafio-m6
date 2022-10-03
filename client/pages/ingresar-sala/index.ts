@@ -14,6 +14,7 @@ class IngresarSala extends HTMLElement {
     botonEl?.addEventListener("click", () => {
       if (input.value !== "") {
         state.setOnline(true);
+
         state.setRoomId(input.value);
         Router.go("/empezar");
       } else {

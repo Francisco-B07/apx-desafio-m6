@@ -74,6 +74,7 @@ const state = {
     const cs = this.getState();
     cs.oponente = oponente;
     this.setState(cs);
+    console.log(cs.oponente);
   },
   setScore(score: number) {
     const cs = this.getState();
@@ -167,6 +168,7 @@ const state = {
   askNewRoom(callback?) {
     this.setScore(0);
     this.setCantPlayers(0);
+    this.setOponente({});
 
     const cs = this.getState();
     if (cs.playerId) {
@@ -209,7 +211,7 @@ const state = {
       });
   },
 
-  pushJugada() {
+  pushJugada(callback?) {
     const cs = this.getState();
 
     fetch(API_BASE_URL + "/jugada", {
@@ -222,7 +224,15 @@ const state = {
         playerId: cs.playerId,
         rtdbRoomId: cs.rtdbRoomId,
       }),
-    });
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        if (callback) {
+          callback();
+        }
+      });
   },
 
   checkRoomDisponible(callback?) {

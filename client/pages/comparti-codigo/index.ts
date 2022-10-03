@@ -6,9 +6,11 @@ class CompartiCodigo extends HTMLElement {
   connectedCallback() {
     this.shadow = this.attachShadow({ mode: "open" });
 
-    state.checkCantPlayers();
     this.render();
-    this.goInstructiones();
+    state.checkCantPlayers((err) => {
+      if (err) console.error("Hubo un error en el listenRoom");
+      this.goInstructiones();
+    });
     state.subscribe(() => {
       // this.render();
       this.goInstructiones();
@@ -59,10 +61,11 @@ class CompartiCodigo extends HTMLElement {
             font-size: 24px;
             line-height: 100%;
             color: #000000;
+
           }
           .nombre1{
             min-width:130px;
-            text-align: center;
+            text-align: start;
   
           }
           .nombre2,
@@ -76,7 +79,7 @@ class CompartiCodigo extends HTMLElement {
           }
           .nombre2{
             min-width:130px;
-            text-align: center;
+            text-align: start;
   
           }
           .sala {
@@ -157,9 +160,11 @@ class CompartiCodigo extends HTMLElement {
             
             <div class="player">
               <div class="nombre2">
-                <span class="">${localData.oponente?.nombre || ""} :</span>
+                <span class="">${
+                  localData.oponente.nombre || "Tu rival"
+                } :</span>
               </div>
-              <span class="score2">${localData.oponente?.score}</span>
+              <span class="score2">${localData.oponente.score || "0"}</span>
             </div>
           </div>
           <div class="sala">

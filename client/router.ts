@@ -10,5 +10,6 @@ router.setRoutes([
   { path: "/instructions", component: "instructions-component" },
   { path: "/salaDeEspera", component: "sala-de-espera-component" },
   { path: "/play", component: "play-component" },
+  { path: "/eleccion", component: "eleccion-component" },
   { path: "/result", component: "result-component" },
 ]);

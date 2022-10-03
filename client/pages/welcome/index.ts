@@ -9,7 +9,6 @@ class Welcome extends HTMLElement {
     this.render();
     state.setRoomId("");
     state.setOnline(true);
-    state.setRtdbRoomId("");
 
     var botonNuevoJuegoEl = this.shadow.querySelector(
       ".container-boton-nuevoJuego"

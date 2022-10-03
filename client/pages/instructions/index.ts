@@ -7,11 +7,14 @@ class Instructions extends HTMLElement {
     this.shadow = this.attachShadow({ mode: "open" });
 
     this.render();
+
     var botonEl = this.shadow.querySelector(".container-boton");
     botonEl?.addEventListener("click", () => {
-      // const cs = state.getState();
       state.setStart(true);
-      Router.go("/salaDeEspera");
+      state.pushJugada((err) => {
+        if (err) console.error("Hubo un error en el listenRoom");
+        Router.go("/salaDeEspera");
+      });
     });
   }
   render() {

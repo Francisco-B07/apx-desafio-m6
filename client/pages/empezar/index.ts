@@ -31,7 +31,7 @@ class Empezar extends HTMLElement {
               if (err) console.error("Hubo un error en el accessToRoom");
               console.log("online", cs.currentGame.online);
 
-              // state.listenRoom();
+              state.setStart(false);
               if (input.value !== "") {
                 state.pushJugada();
                 Router.go("/compartiCodigo");
@@ -51,9 +51,9 @@ class Empezar extends HTMLElement {
               state.checkRoomDisponible((err) => {
                 if (err) console.error("Hubo un error en el listenRoom");
                 const cs = state.getState();
-                console.log("oooooooooooo", cs.ocupada);
                 if (!cs.ocupada) {
                   console.log("online unirme", cs.currentGame.online);
+                  state.setStart(false);
 
                   state.pushJugada();
                   console.log("currentGame desde unirme", cs.currentGame);
