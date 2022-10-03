@@ -4,10 +4,11 @@ import { Router } from "@vaadin/router";
 class Play extends HTMLElement {
   shadow: ShadowRoot;
   connectedCallback() {
+    this.shadow = this.attachShadow({ mode: "open" });
+
     this.render();
   }
   render() {
-    this.shadow = this.attachShadow({ mode: "open" });
     const div = document.createElement("div");
     const imageURL = require("url:../../img/fondo.svg");
     var style = document.createElement("style");

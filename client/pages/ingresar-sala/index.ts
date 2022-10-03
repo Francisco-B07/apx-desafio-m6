@@ -4,6 +4,7 @@ import { Router } from "@vaadin/router";
 class IngresarSala extends HTMLElement {
   shadow: ShadowRoot;
   connectedCallback() {
+    this.shadow = this.attachShadow({ mode: "open" });
     this.render();
     const inputEl = this.shadow.querySelector(".ingresar-codigo");
     const input = inputEl as any;
@@ -11,13 +12,16 @@ class IngresarSala extends HTMLElement {
     var botonEl = this.shadow.querySelector(".container-boton");
 
     botonEl?.addEventListener("click", () => {
-      state.setRoomId(input.value);
-      Router.go("/empezar");
+      if (input.value !== "") {
+        state.setOnline(true);
+        state.setRoomId(input.value);
+        Router.go("/empezar");
+      } else {
+        alert("Debe ingresar un codigo para continuar");
+      }
     });
   }
   render() {
-    this.shadow = this.attachShadow({ mode: "open" });
-
     const div = document.createElement("div");
     const imageURL = require("url:../../img/fondo.svg");
 

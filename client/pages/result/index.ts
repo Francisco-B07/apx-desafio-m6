@@ -4,6 +4,8 @@ import { Router } from "@vaadin/router";
 class Result extends HTMLElement {
   shadow: ShadowRoot;
   connectedCallback() {
+    this.shadow = this.attachShadow({ mode: "open" });
+
     this.render();
     var botonEl = this.shadow.querySelector(".container-boton");
 
@@ -12,7 +14,6 @@ class Result extends HTMLElement {
     });
   }
   render() {
-    this.shadow = this.attachShadow({ mode: "open" });
     const resultado = state.getState().currentGame.resultado;
     const tusPuntos = state.getState().currentGame.vos;
     const compuPuntos = state.getState().currentGame.computer;

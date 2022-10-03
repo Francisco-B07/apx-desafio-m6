@@ -4,6 +4,8 @@ import { state } from "../../state";
 class Empezar extends HTMLElement {
   shadow: ShadowRoot;
   connectedCallback() {
+    this.shadow = this.attachShadow({ mode: "open" });
+
     this.render();
 
     const inputEl = this.shadow.querySelector(".ingresar-nombre");
@@ -16,58 +18,60 @@ class Empezar extends HTMLElement {
 
       // Reviso el state
       const cs = state.getState();
-
-      // Si no tiene codigo de Room
+      console.log(cs.currentGame.nombre);
+      console.log("roomId", cs.roomId);
 
       state.signIn((err) => {
-        if (cs.roomNuevo) {
+        // Si no tiene codigo de Room
+        if (cs.roomId == "") {
           if (err) console.error("Hubo un error en el signIn");
 
           state.askNewRoom(() => {
             state.accessToRoom((err) => {
               if (err) console.error("Hubo un error en el accessToRoom");
-              state.pushJugada();
-              state.listenRoom();
+              console.log("online", cs.currentGame.online);
+
+              // state.listenRoom();
               if (input.value !== "") {
+                state.pushJugada();
+                Router.go("/compartiCodigo");
+              } else {
+                alert("Debe ingresar un nombre para continuar");
+              }
+            });
+          });
+          // Si tiene codigo de Room
+        } else {
+          if (input.value !== "") {
+            state.accessToRoom((err) => {
+              if (err) console.error("Hubo un error en el accessToRoom");
+              console.log("desde empezar", cs.rtdbRoomId);
+              state.setRtdbRoomId(cs.rtdbRoomId);
+
+              state.checkRoomDisponible((err) => {
+                if (err) console.error("Hubo un error en el listenRoom");
+                const cs = state.getState();
+                console.log("oooooooooooo", cs.ocupada);
                 if (!cs.ocupada) {
-                  state.setOnline(true);
+                  console.log("online unirme", cs.currentGame.online);
+
+                  state.pushJugada();
+                  console.log("currentGame desde unirme", cs.currentGame);
+
                   Router.go("/compartiCodigo");
                 } else {
                   alert("La sala ya esta ocupada");
                 }
-              } else {
-              }
+              });
             });
-          });
-        } else {
-          state.accessToRoom((err) => {
-            if (err) console.error("Hubo un error en el accessToRoom");
-
-            state.pushJugada();
-            state.listenRoom((err) => {
-              if (err) console.error("Hubo un error en el listenRoom");
-              if (input.value !== "") {
-                const currentState = localStorage.getItem("state");
-                if (currentState) {
-                  const localData = JSON.parse(currentState);
-                  if (!localData.ocupada) {
-                    state.setOnline(true);
-                    Router.go("/compartiCodigo");
-                  } else {
-                    alert("La sala ya esta ocupada");
-                  }
-                } else {
-                  alert("Debe ingresar un nombre para continuar");
-                }
-              }
-            });
-          });
+          } else {
+            alert("Debe ingresar un nombre para continuar");
+          }
         }
       });
     });
   }
   render() {
-    this.shadow = this.attachShadow({ mode: "open" });
     const div = document.createElement("div");
     const imageURL = require("url:../../img/fondo.svg");
 

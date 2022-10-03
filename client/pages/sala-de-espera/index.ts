@@ -4,6 +4,8 @@ import { Router } from "@vaadin/router";
 class SalaDeEspera extends HTMLElement {
   shadow: ShadowRoot;
   connectedCallback() {
+    this.shadow = this.attachShadow({ mode: "open" });
+
     this.render();
     //   state.pushJugada();
     // state.listenRoom();
@@ -19,7 +21,6 @@ class SalaDeEspera extends HTMLElement {
     // });
   }
   render() {
-    this.shadow = this.attachShadow({ mode: "open" });
     const div = document.createElement("div");
     const imageURL = require("url:../../img/fondo.svg");
 

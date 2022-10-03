@@ -4,7 +4,13 @@ import { Router } from "@vaadin/router";
 class Welcome extends HTMLElement {
   shadow: ShadowRoot;
   connectedCallback() {
+    this.shadow = this.attachShadow({ mode: "open" });
+
     this.render();
+    state.setRoomId("");
+    state.setOnline(true);
+    state.setRtdbRoomId("");
+
     var botonNuevoJuegoEl = this.shadow.querySelector(
       ".container-boton-nuevoJuego"
     );
@@ -13,19 +19,16 @@ class Welcome extends HTMLElement {
     );
 
     botonNuevoJuegoEl?.addEventListener("click", () => {
-      state.setNuevoRoom(true);
-      console.log("click");
-
+      // state.setNuevoRoom(true);
       Router.go("/empezar");
     });
+
     botonIngresarSalaEl?.addEventListener("click", () => {
-      state.setNuevoRoom(false);
-      console.log("click");
+      // state.setNuevoRoom(false);
       Router.go("/ingresarSala");
     });
   }
   render() {
-    this.shadow = this.attachShadow({ mode: "open" });
     const div = document.createElement("div");
     const imageURL = require("url:../../img/fondo.svg");
 

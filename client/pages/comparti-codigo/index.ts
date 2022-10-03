@@ -4,18 +4,25 @@ import { Router } from "@vaadin/router";
 class CompartiCodigo extends HTMLElement {
   shadow: ShadowRoot;
   connectedCallback() {
+    this.shadow = this.attachShadow({ mode: "open" });
+
+    state.checkCantPlayers();
     this.render();
+    this.goInstructiones();
     state.subscribe(() => {
-      const cs = state.getState();
-      if (cs.oponente.online == true) {
-        Router.go("/instructions");
-      }
+      // this.render();
+      this.goInstructiones();
     });
+  }
+  goInstructiones() {
+    const cs = state.getState();
+    if (cs.cantPlayers == 2) {
+      Router.go("/instructions");
+    }
   }
   render() {
     const currentState = localStorage.getItem("state");
     const localData = currentState ? JSON.parse(currentState) : "";
-    this.shadow = this.attachShadow({ mode: "open" });
 
     const div = document.createElement("div");
     const imageURL = require("url:../../img/fondo.svg");
@@ -147,11 +154,12 @@ class CompartiCodigo extends HTMLElement {
               </div>
               <span class="score1">${localData.currentGame.score}</span>
             </div>
+            
             <div class="player">
               <div class="nombre2">
-                <span class="">${localData.oponente.nombre}:</span>
+                <span class="">${localData.oponente?.nombre || ""} :</span>
               </div>
-              <span class="score2">${localData.oponente.score}</span>
+              <span class="score2">${localData.oponente?.score}</span>
             </div>
           </div>
           <div class="sala">
@@ -172,6 +180,7 @@ class CompartiCodigo extends HTMLElement {
       </div>
     </div>
     `;
+    // this.firstChild?.remove();
     this.shadow.appendChild(style);
     this.shadow.appendChild(div);
   }
