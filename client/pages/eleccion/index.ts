@@ -7,10 +7,8 @@ class Eleccion extends HTMLElement {
   connectedCallback() {
     this.shadow = this.attachShadow({ mode: "open" });
     this.render();
+    state.pushJugada();
     state.subscribe(() => {
-      const cs = state.getState();
-      console.log("cambieeeee", cs);
-
       this.render();
     });
     const cs = state.getState();
