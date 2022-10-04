@@ -106,7 +106,7 @@ const state = {
   },
   setIrAInstrucciones(irAInstrucciones: boolean) {
     const cs = this.getState();
-    cs.irAInstrucciones = irAInstrucciones;
+    cs.currentGame.irAInstrucciones = irAInstrucciones;
     this.setState(cs);
   },
 
