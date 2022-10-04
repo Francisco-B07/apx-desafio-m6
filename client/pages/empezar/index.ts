@@ -30,6 +30,7 @@ class Empezar extends HTMLElement {
             state.accessToRoom((err) => {
               if (err) console.error("Hubo un error en el accessToRoom");
               console.log("online", cs.currentGame.online);
+              state.setIrAInstrucciones(true);
 
               state.setStart(false);
               if (input.value !== "") {

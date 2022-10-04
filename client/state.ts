@@ -10,6 +10,7 @@ type Oponente = {
   start: boolean;
   score: number;
   online: boolean;
+  irAInstrucciones: boolean;
 };
 
 const state = {
@@ -176,6 +177,7 @@ const state = {
     this.setScore(0);
     this.setCantPlayers(0);
     this.setOponente({});
+    this.setIrAInstrucciones(false);
 
     const cs = this.getState();
     if (cs.playerId) {
