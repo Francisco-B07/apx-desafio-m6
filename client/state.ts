@@ -276,7 +276,7 @@ const state = {
 
   checkCantPlayers(callback?) {
     const cs = this.getState();
-    console.log("rtdb", cs.rtdbRoomId);
+    // console.log("rtdb", cs.rtdbRoomId);
 
     const roomsRef = rtdb.ref("/rooms/" + cs.rtdbRoomId);
 
@@ -285,7 +285,7 @@ const state = {
 
       const rtdbRoom = snap.val();
       const currentGame = map(rtdbRoom.currentGame);
-      console.log("current game", currentGame);
+      // console.log("current game", currentGame);
 
       this.setCantPlayers(currentGame.length);
       if (cs.cantPlayers == 2) {

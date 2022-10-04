@@ -6,6 +6,7 @@ class Play extends HTMLElement {
   connectedCallback() {
     this.shadow = this.attachShadow({ mode: "open" });
     this.shadow.firstChild?.remove();
+    console.log("entre a play");
 
     this.render();
     const cs = state.getState();

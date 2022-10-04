@@ -4,6 +4,8 @@ import { Router } from "@vaadin/router";
 class Eleccion extends HTMLElement {
   shadow: ShadowRoot;
   connectedCallback() {
+    console.log("entre a eleccion");
+
     this.shadow = this.attachShadow({ mode: "open" });
     this.render();
     this.redirect();

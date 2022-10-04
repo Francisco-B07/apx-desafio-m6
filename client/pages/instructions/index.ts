@@ -4,6 +4,8 @@ import { Router } from "@vaadin/router";
 class Instructions extends HTMLElement {
   shadow: ShadowRoot;
   connectedCallback() {
+    console.log("entre a instrucciones");
+
     this.shadow = this.attachShadow({ mode: "open" });
 
     this.render();
@@ -14,7 +16,12 @@ class Instructions extends HTMLElement {
       state.setStart(true);
       state.pushJugada((err) => {
         if (err) console.error("Hubo un error en pushJugada de instructions");
-        Router.go("/salaDeEspera");
+        const cs = state.getState();
+        if (cs.oponente.start == false) {
+          Router.go("/salaDeEspera");
+        } else {
+          Router.go("/play");
+        }
       });
     });
   }

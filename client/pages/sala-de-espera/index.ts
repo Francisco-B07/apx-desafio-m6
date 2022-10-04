@@ -4,6 +4,8 @@ import { Router } from "@vaadin/router";
 class SalaDeEspera extends HTMLElement {
   shadow: ShadowRoot;
   connectedCallback() {
+    console.log("entre a sala de espera");
+
     this.shadow = this.attachShadow({ mode: "open" });
 
     this.render();
