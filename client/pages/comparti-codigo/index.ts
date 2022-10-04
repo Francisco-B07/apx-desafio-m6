@@ -18,7 +18,10 @@ class CompartiCodigo extends HTMLElement {
   }
   goInstructiones() {
     const cs = state.getState();
-    if (cs.cantPlayers == 2) {
+    if (
+      cs.oponente.irAInstrucciones == true &&
+      cs.currentGame.irAInstrucciones == true
+    ) {
       Router.go("/instructions");
     }
   }

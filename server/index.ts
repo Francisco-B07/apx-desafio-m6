@@ -102,6 +102,7 @@ app.post("/jugada", (req, res) => {
       start: req.body.currentGame.start,
       score: req.body.currentGame.score,
       online: req.body.currentGame.online,
+      irAInstrucciones: req.body.currentGame.irAInstrucciones,
     })
     .then((data) => {
       res.json({

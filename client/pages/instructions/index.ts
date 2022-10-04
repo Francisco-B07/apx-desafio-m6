@@ -10,6 +10,7 @@ class Instructions extends HTMLElement {
 
     var botonEl = this.shadow.querySelector(".container-boton");
     botonEl?.addEventListener("click", () => {
+      state.setIrAInstrucciones(false);
       state.setStart(true);
       state.setChoice("div");
       state.pushJugada((err) => {

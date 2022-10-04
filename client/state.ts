@@ -23,6 +23,7 @@ const state = {
       start: false,
       choice: "",
       score: 0,
+      irAInstrucciones: false,
     },
     currentGame: {
       nombre: "",
@@ -30,6 +31,7 @@ const state = {
       start: false,
       choice: "",
       score: 0,
+      irAInstrucciones: false,
     },
     ocupada: false,
     cantPlayers: 0,
@@ -99,6 +101,11 @@ const state = {
   setRtdbRoomId(rtdbRoomId: string) {
     const cs = this.getState();
     cs.rtdbRoomId = rtdbRoomId;
+    this.setState(cs);
+  },
+  setIrAInstrucciones(irAInstrucciones: boolean) {
+    const cs = this.getState();
+    cs.irAInstrucciones = irAInstrucciones;
     this.setState(cs);
   },
 
