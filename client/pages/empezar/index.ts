@@ -54,7 +54,7 @@ class Empezar extends HTMLElement {
                 if (!cs.ocupada) {
                   console.log("online unirme", cs.currentGame.online);
                   state.setStart(false);
-
+                  state.setChoice("div");
                   state.pushJugada();
                   console.log("currentGame desde unirme", cs.currentGame);
 

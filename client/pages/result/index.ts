@@ -10,7 +10,13 @@ class Result extends HTMLElement {
     var botonEl = this.shadow.querySelector(".container-boton");
 
     botonEl?.addEventListener("click", () => {
-      Router.go("/instructions");
+      state.setChoice("div");
+      state.setStart(false);
+      state.pushJugada((err) => {
+        if (err) console.error("Hubo un error en pushJugada de result");
+
+        Router.go("/instructions");
+      });
     });
   }
   render() {

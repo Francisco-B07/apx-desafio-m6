@@ -3,7 +3,7 @@ const API_BASE_URL = "http://localhost:3000";
 import { rtdb } from "./rtdb";
 import map from "lodash/map";
 
-type Jugada = "piedra" | "papel" | "tijera";
+type Jugada = "piedra" | "papel" | "tijera" | "div";
 type Oponente = {
   nombre: string;
   choice: string;
@@ -276,7 +276,7 @@ const state = {
 
       const rtdbRoom = snap.val();
       const currentGame = map(rtdbRoom.currentGame);
-      console.log(currentGame);
+      console.log("current game", currentGame);
 
       this.setCantPlayers(currentGame.length);
       if (cs.cantPlayers == 2) {

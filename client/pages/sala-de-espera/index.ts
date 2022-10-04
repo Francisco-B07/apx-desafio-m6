@@ -14,7 +14,7 @@ class SalaDeEspera extends HTMLElement {
   }
   goPlay() {
     const cs = state.getState();
-    if (cs.oponente.start == true) {
+    if (cs.oponente.start == true && cs.currentGame.start == true) {
       Router.go("/play");
     }
   }

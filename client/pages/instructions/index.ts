@@ -11,8 +11,9 @@ class Instructions extends HTMLElement {
     var botonEl = this.shadow.querySelector(".container-boton");
     botonEl?.addEventListener("click", () => {
       state.setStart(true);
+      state.setChoice("div");
       state.pushJugada((err) => {
-        if (err) console.error("Hubo un error en el listenRoom");
+        if (err) console.error("Hubo un error en pushJugada de instructions");
         Router.go("/salaDeEspera");
       });
     });

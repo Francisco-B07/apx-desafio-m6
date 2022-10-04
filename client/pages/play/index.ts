@@ -7,14 +7,11 @@ class Play extends HTMLElement {
   connectedCallback() {
     this.shadow = this.attachShadow({ mode: "open" });
     this.render();
-    const cs = state.getState();
-    state.subscribe(() => {
-      const cs = state.getState();
-    });
 
     let counter = 3;
     let counter2 = 0;
 
+    const cs = state.getState();
     const intervalId = setInterval(() => {
       const contador = this.shadow.querySelector(".contador");
       if (contador) {
@@ -24,42 +21,49 @@ class Play extends HTMLElement {
 
       const elegido = this.shadow.querySelector(".seleccionado");
       if (counter == -1 && elegido != null) {
-        elegido.classList.add("jugado");
-        this.shadow.querySelector(".no-seleccionado")?.remove();
-        this.shadow.querySelector(".no-seleccionado")?.remove();
-        this.shadow.querySelector(".container-contador")?.remove();
-        const contenedorPage = this.shadow.querySelector(".container");
-        const oponenteSelect = document.createElement("div");
-        oponenteSelect.innerHTML = `
-      <div class= "computer-select">
-      <${cs.oponente.choice}-el></${cs.oponente.choice}-el>
-      </div>
-      `;
-        contenedorPage?.appendChild(oponenteSelect);
-        state.whoWins(cs.currentGame.choice, cs.oponente.choice);
+        state.setStart(false);
 
-        const intervalId2 = setInterval(() => {
-          counter2++;
-          Router.go("/result");
-          if (counter2 > 0) {
-            clearInterval(intervalId2);
-          }
-        }, 1000);
+        state.pushJugada((err) => {
+          if (err) console.error("Hubo un error en pushJugada de play");
+          state.setChoice(cs.currentGame.choice);
+
+          Router.go("/eleccion");
+        });
         clearInterval(intervalId);
+        //   elegido.classList.add("jugado");
+        //   this.shadow.querySelector(".no-seleccionado")?.remove();
+        //   this.shadow.querySelector(".no-seleccionado")?.remove();
+        //   this.shadow.querySelector(".container-contador")?.remove();
+        //   const contenedorPage = this.shadow.querySelector(".container");
+        //   const oponenteSelect = document.createElement("div");
+        //   oponenteSelect.innerHTML = `
+        //   <div class= "computer-select">
+        //   <${cs.oponente.choice}-el></${cs.oponente.choice}-el>
+        //   </div>
+        //   `;
+        //   contenedorPage?.appendChild(oponenteSelect);
+        //   // state.whoWins(cs.currentGame.choice, cs.oponente.choice);
       }
-      if (counter < -1) {
-        Router.go("/instructions");
-        clearInterval(intervalId);
-      }
+      // if (counter < -1) {
+      //   const cs = state.getState();
+      //   state.setStart(false);
+      //   state.setChoice("div");
+      //   state.pushJugada((err) => {
+      //     if (err) console.error("Hubo un error en el listenRoom");
+      //     Router.go("/eleccion");
+      //   });
+      //   clearInterval(intervalId);
+      // }
     }, 1000);
+
     var piedra = this.shadow.querySelector(".piedra");
     var papel = this.shadow.querySelector(".papel");
     var tijera = this.shadow.querySelector(".tijera");
 
     piedra?.addEventListener("click", () => {
       state.setChoice("piedra");
+      console.log("piedra");
 
-      state.pushJugada();
       piedra?.classList.remove("no-seleccionado");
       papel?.classList.remove("seleccionado");
       tijera?.classList.remove("seleccionado");
@@ -70,10 +74,9 @@ class Play extends HTMLElement {
     });
 
     papel?.addEventListener("click", () => {
-      state.setChoice("piedra");
+      console.log("papel");
 
-      state.pushJugada();
-
+      state.setChoice("papel");
       piedra?.classList.remove("seleccionado");
       papel?.classList.remove("no-seleccionado");
       tijera?.classList.remove("seleccionado");
@@ -84,10 +87,9 @@ class Play extends HTMLElement {
     });
 
     tijera?.addEventListener("click", () => {
-      state.setChoice("piedra");
+      console.log("tijera");
 
-      state.pushJugada();
-
+      state.setChoice("tijera");
       piedra?.classList.remove("seleccionado");
       papel?.classList.remove("seleccionado");
       tijera?.classList.remove("no-seleccionado");
@@ -191,11 +193,10 @@ class Play extends HTMLElement {
           }
           
           .jugado{
-            top: 50%;
+            marign-top: 60%;
             Width: 158px;
             Height: 375px;
-            top: 63%;
-            left: 30%
+            margin-left: 30%
           }
           @media (min-width: 600px){
             .jugado{
@@ -265,6 +266,7 @@ class Play extends HTMLElement {
       </div>
     </div>
     `;
+    this.firstChild?.remove();
     this.shadow.appendChild(style);
     this.shadow.appendChild(div);
   }

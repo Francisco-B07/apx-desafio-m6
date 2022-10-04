@@ -17,6 +17,7 @@ import "./pages/comparti-codigo/index";
 import "./pages/instructions/index";
 import "./pages/sala-de-espera/index";
 import "./pages/play/index";
+import "./pages/eleccion/index";
 import "./pages/result/index";
 
 // OTROS IMPORTS
