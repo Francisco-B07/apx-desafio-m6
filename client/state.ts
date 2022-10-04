@@ -3,7 +3,7 @@ const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:3000";
 import { rtdb } from "./rtdb";
 import map from "lodash/map";
 
-type Jugada = "piedra" | "papel" | "tijera" | "div";
+type Jugada = "piedra" | "papel" | "tijera" | "nada";
 type Oponente = {
   nombre: string;
   choice: string;
@@ -30,7 +30,7 @@ const state = {
       nombre: "",
       online: false,
       start: false,
-      choice: "",
+      choice: "nada",
       score: 0,
       irAInstrucciones: false,
     },

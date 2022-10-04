@@ -12,7 +12,6 @@ class CompartiCodigo extends HTMLElement {
       this.goInstructiones();
     });
     state.subscribe(() => {
-      // this.render();
       this.goInstructiones();
     });
   }
@@ -130,7 +129,7 @@ class CompartiCodigo extends HTMLElement {
           .container-figuras{
             position: absolute;
             left: 15%;
-            top: 80%;
+            top: 87%;
           }
           @media (max-width: 370px){
             .container-figuras{
@@ -141,7 +140,7 @@ class CompartiCodigo extends HTMLElement {
           @media (min-width: 600px){
             .container-figuras{
               left: 40%;
-              top: 80%;
+              top: 87%;
             }
           }
   

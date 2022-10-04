@@ -7,12 +7,11 @@ class Instructions extends HTMLElement {
     this.shadow = this.attachShadow({ mode: "open" });
 
     this.render();
+    state.setIrAInstrucciones(false);
 
     var botonEl = this.shadow.querySelector(".container-boton");
     botonEl?.addEventListener("click", () => {
-      state.setIrAInstrucciones(false);
       state.setStart(true);
-      state.setChoice("div");
       state.pushJugada((err) => {
         if (err) console.error("Hubo un error en pushJugada de instructions");
         Router.go("/salaDeEspera");

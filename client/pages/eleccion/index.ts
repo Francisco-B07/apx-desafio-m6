@@ -1,31 +1,42 @@
 import { state } from "../../state";
 import { Router } from "@vaadin/router";
-type Jugada = "piedra" | "papel" | "tijera";
 
 class Eleccion extends HTMLElement {
   shadow: ShadowRoot;
   connectedCallback() {
     this.shadow = this.attachShadow({ mode: "open" });
     this.render();
-    state.pushJugada();
-    state.subscribe(() => {
-      this.render();
-    });
-    const cs = state.getState();
+    this.redirect();
+    // state.subscribe(() => {
+    //   this.render();
+    //   this.redirect();
+    // });
+    // const cs = state.getState();
     // state
 
     // let counter = 3;
-    let counter2 = 0;
+    // let counter2 = 0;
 
-    const intervalId2 = setInterval(() => {
-      counter2++;
-      if (counter2 > 3) {
-        clearInterval(intervalId2);
-        Router.go("/result");
-      }
-    }, 1000);
+    // const intervalId2 = setInterval(() => {
+    //   counter2++;
+    //   if (counter2 > 3) {
+    //     Router.go("/result");
+    //     clearInterval(intervalId2);
+    //   }
+    // }, 1000);
   }
+  redirect() {
+    const cs = state.getState();
+    console.log("eleccion de mi rival", cs.oponente.choice);
 
+    if (cs.oponente.choice == "nada") {
+      Router.go("/instructions");
+    } else {
+      setTimeout(() => {
+        Router.go("/result");
+      }, 3000);
+    }
+  }
   render() {
     const cs = state.getState();
 

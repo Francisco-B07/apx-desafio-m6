@@ -18,12 +18,10 @@ class Welcome extends HTMLElement {
     );
 
     botonNuevoJuegoEl?.addEventListener("click", () => {
-      // state.setNuevoRoom(true);
       Router.go("/empezar");
     });
 
     botonIngresarSalaEl?.addEventListener("click", () => {
-      // state.setNuevoRoom(false);
       Router.go("/ingresarSala");
     });
   }
@@ -42,7 +40,7 @@ class Welcome extends HTMLElement {
             @media (max-width: 370px){
               span{
                 font-size: 60px;
-            }
+              }
             }
     
             .container{
@@ -105,7 +103,7 @@ class Welcome extends HTMLElement {
             .container-figuras{
               position: absolute;
               left: 15%;
-              top: 80%;
+              top: 87%;
             }
             @media (max-width: 370px){
               .container-figuras{
@@ -116,7 +114,7 @@ class Welcome extends HTMLElement {
             @media (min-width: 600px){
               .container-figuras{
                 left: 38%;
-                top: 80%;
+                top: 87%;
               }
             }              
         `;

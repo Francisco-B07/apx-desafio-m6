@@ -47,7 +47,7 @@ class Empezar extends HTMLElement {
             state.accessToRoom((err) => {
               if (err) console.error("Hubo un error en el accessToRoom");
               console.log("desde empezar", cs.rtdbRoomId);
-              state.setRtdbRoomId(cs.rtdbRoomId);
+              // state.setRtdbRoomId(cs.rtdbRoomId);
 
               state.checkRoomDisponible((err) => {
                 if (err) console.error("Hubo un error en el listenRoom");
@@ -55,7 +55,7 @@ class Empezar extends HTMLElement {
                 if (!cs.ocupada) {
                   console.log("online unirme", cs.currentGame.online);
                   state.setStart(false);
-                  state.setChoice("div");
+                  state.setChoice("nada");
                   state.setIrAInstrucciones(true);
                   state.pushJugada();
                   console.log("currentGame desde unirme", cs.currentGame);

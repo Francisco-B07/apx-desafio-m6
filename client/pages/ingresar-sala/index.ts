@@ -14,7 +14,6 @@ class IngresarSala extends HTMLElement {
     botonEl?.addEventListener("click", () => {
       if (input.value !== "") {
         state.setOnline(true);
-
         state.setRoomId(input.value);
         Router.go("/empezar");
       } else {
@@ -113,7 +112,7 @@ class IngresarSala extends HTMLElement {
             .container-figuras{
               position: absolute;
               left: 15%;
-              top: 80%;
+              top: 87%;
             }
             @media (max-width: 370px){
               .container-figuras{
@@ -124,7 +123,7 @@ class IngresarSala extends HTMLElement {
             @media (min-width: 600px){
               .container-figuras{
                 left: 40%;
-                top: 80%;
+                top: 87%;
               }
             }              
         `;

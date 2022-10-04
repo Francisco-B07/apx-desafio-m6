@@ -1,17 +1,17 @@
 import { state } from "../../state";
 import { Router } from "@vaadin/router";
-type Jugada = "piedra" | "papel" | "tijera";
 
 class Play extends HTMLElement {
   shadow: ShadowRoot;
   connectedCallback() {
     this.shadow = this.attachShadow({ mode: "open" });
+    this.shadow.firstChild?.remove();
+
     this.render();
+    const cs = state.getState();
 
     let counter = 3;
-    let counter2 = 0;
 
-    const cs = state.getState();
     const intervalId = setInterval(() => {
       const contador = this.shadow.querySelector(".contador");
       if (contador) {
@@ -19,15 +19,18 @@ class Play extends HTMLElement {
         counter--;
       }
 
-      const elegido = this.shadow.querySelector(".seleccionado");
-      if (counter == -1 && elegido != null) {
+      // const elegido = this.shadow.querySelector(".seleccionado");
+      if (counter == -1) {
+        state.setChoice(cs.currentGame.choice);
         state.setStart(false);
 
         state.pushJugada((err) => {
           if (err) console.error("Hubo un error en pushJugada de play");
-          state.setChoice(cs.currentGame.choice);
-
-          Router.go("/eleccion");
+          if (cs.currentGame.choice == "nada") {
+            Router.go("/instructions");
+          } else {
+            Router.go("/eleccion");
+          }
         });
         clearInterval(intervalId);
         //   elegido.classList.add("jugado");
@@ -46,8 +49,8 @@ class Play extends HTMLElement {
       }
       // if (counter < -1) {
       //   const cs = state.getState();
+      //   // state.setChoice("nada");
       //   state.setStart(false);
-      //   state.setChoice("div");
       //   state.pushJugada((err) => {
       //     if (err) console.error("Hubo un error en el listenRoom");
       //     Router.go("/eleccion");
@@ -192,18 +195,6 @@ class Play extends HTMLElement {
             top: 85%;
           }
           
-          .jugado{
-            marign-top: 60%;
-            Width: 158px;
-            Height: 375px;
-            margin-left: 30%
-          }
-          @media (min-width: 600px){
-            .jugado{
-              left: 45%;          
-            }
-          }   
-  
           .container-contador{
             margin-top: 170px;
             width: 250px;
@@ -266,7 +257,7 @@ class Play extends HTMLElement {
       </div>
     </div>
     `;
-    this.firstChild?.remove();
+    this.shadow.firstChild?.remove();
     this.shadow.appendChild(style);
     this.shadow.appendChild(div);
   }
