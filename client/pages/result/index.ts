@@ -7,8 +7,8 @@ class Result extends HTMLElement {
     this.shadow = this.attachShadow({ mode: "open" });
 
     this.render();
-    var botonEl = this.shadow.querySelector(".container-boton");
 
+    var botonEl = this.shadow.querySelector(".container-boton");
     botonEl?.addEventListener("click", () => {
       state.setChoice("");
       state.setStart(false);
@@ -20,9 +20,8 @@ class Result extends HTMLElement {
     });
   }
   render() {
-    const resultado = state.getState().currentGame.resultado;
-    const tusPuntos = state.getState().currentGame.vos;
-    const compuPuntos = state.getState().currentGame.computer;
+    const cs = state.getState();
+
     const div = document.createElement("div");
     var style = document.createElement("style");
     style.textContent = `
@@ -32,7 +31,7 @@ class Result extends HTMLElement {
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: var(--fondo-${resultado});          
+            background-color: var(--fondo-${cs.resultado});          
           }
   
           .container-score{
@@ -82,17 +81,19 @@ class Result extends HTMLElement {
 
     div.innerHTML = `
     <div class="container">
-      <estrella-el resultado="${resultado}"></estrella-el> 
+      <estrella-el resultado="${cs.resultado}"></estrella-el> 
       <div class="container-score">
         <h2 tag="h2" class="titulo-score">Puntaje</h2>
-        <p class="puntajes" tag="p">Vos: ${tusPuntos}</p>
-        <p class="puntajes" tag="p">Máquina: ${compuPuntos}</p>    
+        <p class="puntajes" tag="p">${cs.currentGame.nombre}: ${cs.currentGame.score}</p>
+        <p class="puntajes" tag="p">${cs.oponente.nombre}: ${cs.oponente.score}</p>    
       </div>
       <div class="container-boton">
           <button-el >Volver a Jugar</button-el>
       </div>      
     </div>
     `;
+    this.shadow.firstChild?.remove();
+
     this.shadow.appendChild(style);
     this.shadow.appendChild(div);
   }

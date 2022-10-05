@@ -3,14 +3,15 @@ const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:3000";
 import { rtdb } from "./rtdb";
 import map from "lodash/map";
 
-type Jugada = "piedra" | "papel" | "tijera" | "nada" | "";
-type Oponente = {
+type Jugada = "piedra" | "papel" | "tijera" | "";
+type Game = {
   nombre: string;
-  choice: string;
-  start: boolean;
-  score: number;
   online: boolean;
+  start: boolean;
+  choice: string;
+  score: number;
   irAInstrucciones: boolean;
+  irAResult: boolean;
 };
 
 const state = {
@@ -38,10 +39,9 @@ const state = {
     },
     ocupada: false,
     cantPlayers: 0,
-
-    // iniciar: false,
-    // roomNuevo: false,
+    resultado: "",
   },
+
   listeners: [],
 
   init() {
@@ -75,11 +75,15 @@ const state = {
     cs.ocupada = ocupada;
     this.setState(cs);
   },
-  setOponente(oponente: Oponente) {
+  setOponente(oponente: Game) {
     const cs = this.getState();
     cs.oponente = oponente;
     this.setState(cs);
-    console.log(cs.oponente);
+  },
+  setCurrentGame(currentGame: Game) {
+    const cs = this.getState();
+    cs.currentGame = currentGame;
+    this.setState(cs);
   },
   setScore(score: number) {
     const cs = this.getState();
@@ -116,21 +120,19 @@ const state = {
     cs.currentGame.irAResult = irAResult;
     this.setState(cs);
   },
+  setResultado(resultado: string) {
+    const cs = this.getState();
+    cs.resultado = resultado;
+    this.setState(cs);
+  },
 
-  whoWins(myPlay: Jugada, computerPlay: Jugada) {
-    const currentState = this.getState();
-
-    const ganeConTijera: boolean =
-      myPlay == "tijera" && computerPlay == "papel";
-    const ganeConPiedra: boolean =
-      myPlay == "piedra" && computerPlay == "tijera";
-    const ganeConPapel: boolean = myPlay == "papel" && computerPlay == "piedra";
-    const perdiConTijera: boolean =
-      myPlay == "tijera" && computerPlay == "piedra";
-    const perdiConPiedra: boolean =
-      myPlay == "piedra" && computerPlay == "papel";
-    const perdiConPapel: boolean =
-      myPlay == "papel" && computerPlay == "tijera";
+  whoWins(myPlay: Jugada, oponente: Jugada, callback) {
+    const ganeConTijera: boolean = myPlay == "tijera" && oponente == "papel";
+    const ganeConPiedra: boolean = myPlay == "piedra" && oponente == "tijera";
+    const ganeConPapel: boolean = myPlay == "papel" && oponente == "piedra";
+    const perdiConTijera: boolean = myPlay == "tijera" && oponente == "piedra";
+    const perdiConPiedra: boolean = myPlay == "piedra" && oponente == "papel";
+    const perdiConPapel: boolean = myPlay == "papel" && oponente == "tijera";
 
     const gane = [ganeConPapel, ganeConPiedra, ganeConTijera].includes(true);
     const perdi = [perdiConPapel, perdiConPiedra, perdiConTijera].includes(
@@ -138,21 +140,17 @@ const state = {
     );
 
     if (gane) {
-      currentState.currentGame.resultado = "Ganaste";
-      currentState.currentGame.vos++;
+      this.setResultado("Ganaste");
+      const currentState = this.getState();
+      let score = currentState.currentGame.score;
+      score++;
+      this.setScore(score);
     } else if (perdi) {
-      currentState.currentGame.resultado = "Perdiste";
-      currentState.currentGame.computer++;
+      this.setResultado("Perdiste");
     } else {
-      currentState.currentGame.resultado = "Empate";
+      this.setResultado("Empate");
     }
-
-    const newState = {
-      ...this.getState().currentGame,
-      myPlay: myPlay,
-      computerPlay: computerPlay,
-    };
-    this.setState(newState);
+    callback();
   },
 
   signIn(callback) {
@@ -254,7 +252,6 @@ const state = {
   checkRoomDisponible(callback?) {
     const cs = this.getState();
     const roomsRef = rtdb.ref("/rooms/" + cs.rtdbRoomId);
-    console.log("disponible", cs.rtdbRoomId);
 
     roomsRef.once("value", (snap) => {
       const rtdbRoom = snap.val();
@@ -283,7 +280,6 @@ const state = {
 
   checkCantPlayers(callback?) {
     const cs = this.getState();
-    // console.log("rtdb", cs.rtdbRoomId);
 
     const roomsRef = rtdb.ref("/rooms/" + cs.rtdbRoomId);
 
@@ -292,7 +288,6 @@ const state = {
 
       const rtdbRoom = snap.val();
       const currentGame = map(rtdbRoom.currentGame);
-      // console.log("current game", currentGame);
 
       this.setCantPlayers(currentGame.length);
       if (cs.cantPlayers == 2) {
@@ -307,23 +302,30 @@ const state = {
     });
   },
 
-  // listenRoom(callback?) {
-  //   const cs = this.getState();
-  //   const roomsRef = rtdb.ref("/rooms/" + cs.rtdbRoomId);
+  actualizarScore(callback?) {
+    const cs = this.getState();
 
-  //   roomsRef.on("value", (snap) => {
-  //     console.log("empiezo a escuchar");
-  //     const cs = this.getState();
+    const roomsRef = rtdb.ref("/rooms/" + cs.rtdbRoomId);
+    roomsRef.once("value", (snap) => {
+      const rtdbRoom = snap.val();
+      const currentGame = map(rtdbRoom.currentGame);
 
-  //     const rtdbRoom = snap.val();
-  //     const currentGame = map(rtdbRoom.currentGame);
-
-  //     const players = currentGame.length;
-  //     this.setCantPlayers(players);
-
-  //     if (callback) callback();
-  //   });
-  // },
+      const jugadorUno = currentGame[0].nombre;
+      this.setCantPlayers(currentGame.length);
+      if (cs.cantPlayers == 2) {
+        if (cs.currentGame.nombre == jugadorUno) {
+          this.setCurrentGame(currentGame[0]);
+          this.setOponente(currentGame[1]);
+        } else {
+          this.setCurrentGame(currentGame[1]);
+          this.setOponente(currentGame[0]);
+        }
+      } else {
+        this.setScore(0);
+      }
+      if (callback) callback();
+    });
+  },
 
   setState(newState) {
     this.data = newState;
@@ -331,7 +333,6 @@ const state = {
       cb(newState);
     }
     localStorage.setItem("state", JSON.stringify(newState));
-    // console.log("soy el state, he cambiado", this.getState());
   },
 
   subscribe(callback: (any) => any) {

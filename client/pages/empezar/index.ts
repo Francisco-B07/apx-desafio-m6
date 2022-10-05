@@ -18,8 +18,6 @@ class Empezar extends HTMLElement {
 
       // Reviso el state
       const cs = state.getState();
-      console.log(cs.currentGame.nombre);
-      console.log("roomId", cs.roomId);
 
       state.signIn((err) => {
         // Si no tiene codigo de Room
@@ -29,9 +27,8 @@ class Empezar extends HTMLElement {
           state.askNewRoom(() => {
             state.accessToRoom((err) => {
               if (err) console.error("Hubo un error en el accessToRoom");
-              console.log("online", cs.currentGame.online);
               state.setIrAInstrucciones(true);
-
+              state.setChoice("");
               state.setStart(false);
               if (input.value !== "") {
                 state.pushJugada();
@@ -46,21 +43,23 @@ class Empezar extends HTMLElement {
           if (input.value !== "") {
             state.accessToRoom((err) => {
               if (err) console.error("Hubo un error en el accessToRoom");
-              console.log("desde empezar", cs.rtdbRoomId);
               // state.setRtdbRoomId(cs.rtdbRoomId);
 
               state.checkRoomDisponible((err) => {
                 if (err) console.error("Hubo un error en el listenRoom");
                 const cs = state.getState();
                 if (!cs.ocupada) {
-                  console.log("online unirme", cs.currentGame.online);
                   state.setStart(false);
-                  state.setChoice("nada");
+                  state.setChoice("");
                   state.setIrAInstrucciones(true);
-                  state.pushJugada();
-                  console.log("currentGame desde unirme", cs.currentGame);
+                  state.actualizarScore((err) => {
+                    if (err) console.error("Hubo un error en el listenRoom");
+                    state.pushJugada((err) => {
+                      if (err) console.error("Hubo un error en el listenRoom");
 
-                  Router.go("/compartiCodigo");
+                      Router.go("/compartiCodigo");
+                    });
+                  });
                 } else {
                   alert("La sala ya esta ocupada");
                 }
@@ -171,7 +170,7 @@ class Empezar extends HTMLElement {
         .container-figuras{
           position: absolute;
           left: 15%;
-          top: 80%;
+          top: 85%;
         }
         @media (max-width: 370px){
           .container-figuras{
@@ -182,7 +181,7 @@ class Empezar extends HTMLElement {
         @media (min-width: 600px){
           .container-figuras{
             left: 40%;
-            top: 80%;
+            top: 85%;
           }
         }              
     `;

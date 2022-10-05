@@ -4,79 +4,28 @@ type Jugada = "piedra" | "papel" | "tijera" | "nada" | "";
 class Eleccion extends HTMLElement {
   shadow: ShadowRoot;
   connectedCallback() {
-    console.log("entre a eleccion");
-
     this.shadow = this.attachShadow({ mode: "open" });
     const cs = state.getState();
     this.render(cs.oponente.choice);
 
-    // this.goResult();
-    state.subscribe(() => {
-      const cs = state.getState();
-      console.log("entre al SUSCRIBE", cs.oponente.choice);
-      this.render(cs.oponente.choice);
-
-      // this.redirect();
-    });
     state.setIrAResult(true);
-    setTimeout(() => {
-      this.goResult();
-    }, 2000);
-
-    // setTimeout(() => {
-
-    // state.setIrAResult(true);
-    // setTimeout(() => {
-    //   Router.go("/result");
-    //   // state.setChoice("");
-    //   state.setIrAResult(false);
-    // }, 3000);
-    //   Router.go("/result");
-    // }, 3000);
-    // const cs = state.getState();
-    // state
-
-    // let counter = 3;
-    //   let counter2 = 0;
-
-    //   const intervalId2 = setInterval(() => {
-    //     let contador = cs.irAResult;
-    //     contador++;
-    //     state.setIrAResult(contador);
-    //     if (contador <= 2) {
-    //       Router.go("/eleccion");
-    //       clearInterval(intervalId2);
-    //     }
-
-    //     if (contador > 2) {
-    //       Router.go("/result");
-    //       clearInterval(intervalId2);
-    //     }
-    //   }, 1000);
+    this.goResult();
   }
   goResult() {
     const cs = state.getState();
     if (cs.oponente.irAResult == true && cs.currentGame.irAResult == true) {
-      state.pushJugada((err) => {
-        Router.go("/result");
+      state.whoWins(cs.currentGame.choice, cs.oponente.choice, (err) => {
+        if (err) console.error("Hubo un error en pushJugada de result");
+        state.pushJugada((err) => {
+          if (err) console.error("Hubo un error en pushJugada de elección");
+          setTimeout(() => {
+            Router.go("/result");
+          }, 3000);
+        });
       });
     }
   }
-  // goResult() {
-  //   const cs = state.getState();
-  //   state.setIrAResult(true);
-  //   if (
-  //     cs.oponente.choice != "" &&
-  //     cs.currentGame.choice != "" &&
-  //     cs.irAResult
-  //   ) {
-  //     setTimeout(() => {
-  //       Router.go("/result");
-  //       // state.setChoice("");
-  //       state.setIrAResult(false);
-  //     }, 3000);
-  //   }
-  // }
+
   render(jugada?: Jugada) {
     const cs = state.getState();
 
@@ -98,24 +47,12 @@ class Eleccion extends HTMLElement {
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-
-            height: 100vh;
           }
   
-          
-          
           .jugado{
-           
             Width: 158px;
             Height: 375px;
-            
           }
-          @media (min-width: 600px){
-            .jugado{
-            }
-          }   
-  
-          
   
           .computer-select{
             Width: 158px;
@@ -136,7 +73,7 @@ class Eleccion extends HTMLElement {
       </div>
     </div>
     `;
-    this.shadow.firstChild?.remove();
+    this.firstChild?.remove();
 
     this.shadow.appendChild(style);
     this.shadow.appendChild(div);

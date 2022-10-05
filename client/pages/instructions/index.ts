@@ -4,8 +4,6 @@ import { Router } from "@vaadin/router";
 class Instructions extends HTMLElement {
   shadow: ShadowRoot;
   connectedCallback() {
-    console.log("entre a instrucciones");
-
     this.shadow = this.attachShadow({ mode: "open" });
 
     this.render();
@@ -130,7 +128,7 @@ class Instructions extends HTMLElement {
           .container-figuras{
             position: absolute;
             left: 15%;
-            top: 80%;
+            top: 85%;
           }
           @media (max-width: 370px){
             .container-figuras{
@@ -141,7 +139,7 @@ class Instructions extends HTMLElement {
           @media (min-width: 600px){
             .container-figuras{
               left: 40%;
-              top: 80%;
+              top: 85%;
             }
           }
   

@@ -5,13 +5,12 @@ class Play extends HTMLElement {
   shadow: ShadowRoot;
   connectedCallback() {
     this.shadow = this.attachShadow({ mode: "open" });
-    this.shadow.firstChild?.remove();
-    console.log("entre a play");
 
     this.render();
     const cs = state.getState();
 
     let counter = 3;
+    let yaEligio = false;
 
     const intervalId = setInterval(() => {
       const contador = this.shadow.querySelector(".contador");
@@ -20,14 +19,10 @@ class Play extends HTMLElement {
         counter--;
       }
 
-      // const elegido = this.shadow.querySelector(".seleccionado");
       if (counter == -1) {
-        if (cs.currentGame.choice == "") {
-          state.setChoice("nada");
-        } else {
+        if (cs.currentGame.choice != "") {
           state.setChoice(cs.currentGame.choice);
         }
-
         state.setStart(false);
         state.setIrAResult(true);
 
@@ -35,35 +30,10 @@ class Play extends HTMLElement {
           if (err) console.error("Hubo un error en pushJugada de play");
           setTimeout(() => {
             Router.go("/eleccion");
-          }, 500);
-
-          // Router.go("/instructions");
+          }, 1000);
         });
         clearInterval(intervalId);
-        //   elegido.classList.add("jugado");
-        //   this.shadow.querySelector(".no-seleccionado")?.remove();
-        //   this.shadow.querySelector(".no-seleccionado")?.remove();
-        //   this.shadow.querySelector(".container-contador")?.remove();
-        //   const contenedorPage = this.shadow.querySelector(".container");
-        //   const oponenteSelect = document.createElement("div");
-        //   oponenteSelect.innerHTML = `
-        //   <div class= "computer-select">
-        //   <${cs.oponente.choice}-el></${cs.oponente.choice}-el>
-        //   </div>
-        //   `;
-        //   contenedorPage?.appendChild(oponenteSelect);
-        //   // state.whoWins(cs.currentGame.choice, cs.oponente.choice);
       }
-      // if (counter < -1) {
-      //   const cs = state.getState();
-      //   // state.setChoice("nada");
-      //   state.setStart(false);
-      //   state.pushJugada((err) => {
-      //     if (err) console.error("Hubo un error en el listenRoom");
-      //     Router.go("/eleccion");
-      //   });
-      //   clearInterval(intervalId);
-      // }
     }, 1000);
 
     var piedra = this.shadow.querySelector(".piedra");
@@ -71,42 +41,45 @@ class Play extends HTMLElement {
     var tijera = this.shadow.querySelector(".tijera");
 
     piedra?.addEventListener("click", () => {
-      state.setChoice("piedra");
-      console.log("piedra");
+      if (yaEligio == false) {
+        piedra?.classList.remove("no-seleccionado");
+        papel?.classList.remove("seleccionado");
+        tijera?.classList.remove("seleccionado");
 
-      piedra?.classList.remove("no-seleccionado");
-      papel?.classList.remove("seleccionado");
-      tijera?.classList.remove("seleccionado");
-
-      piedra?.classList.add("seleccionado");
-      papel?.classList.add("no-seleccionado");
-      tijera?.classList.add("no-seleccionado");
+        piedra?.classList.add("seleccionado");
+        papel?.classList.add("no-seleccionado");
+        tijera?.classList.add("no-seleccionado");
+        state.setChoice("piedra");
+        yaEligio = true;
+      }
     });
 
     papel?.addEventListener("click", () => {
-      console.log("papel");
+      if (yaEligio == false) {
+        piedra?.classList.remove("seleccionado");
+        papel?.classList.remove("no-seleccionado");
+        tijera?.classList.remove("seleccionado");
 
-      state.setChoice("papel");
-      piedra?.classList.remove("seleccionado");
-      papel?.classList.remove("no-seleccionado");
-      tijera?.classList.remove("seleccionado");
-
-      piedra?.classList.add("no-seleccionado");
-      papel?.classList.add("seleccionado");
-      tijera?.classList.add("no-seleccionado");
+        piedra?.classList.add("no-seleccionado");
+        papel?.classList.add("seleccionado");
+        tijera?.classList.add("no-seleccionado");
+        state.setChoice("papel");
+        yaEligio = true;
+      }
     });
 
     tijera?.addEventListener("click", () => {
-      console.log("tijera");
+      if (yaEligio == false) {
+        piedra?.classList.remove("seleccionado");
+        papel?.classList.remove("seleccionado");
+        tijera?.classList.remove("no-seleccionado");
 
-      state.setChoice("tijera");
-      piedra?.classList.remove("seleccionado");
-      papel?.classList.remove("seleccionado");
-      tijera?.classList.remove("no-seleccionado");
-
-      piedra?.classList.add("no-seleccionado");
-      papel?.classList.add("no-seleccionado");
-      tijera?.classList.add("seleccionado");
+        piedra?.classList.add("no-seleccionado");
+        papel?.classList.add("no-seleccionado");
+        tijera?.classList.add("seleccionado");
+        state.setChoice("tijera");
+        yaEligio = true;
+      }
     });
   }
 
@@ -231,19 +204,7 @@ class Play extends HTMLElement {
             }
           }
   
-          .computer-select{
-            position: absolute;
-            bottom: 62%;
-            Width: 158px;
-            Height: 375px;
-            transform: rotate(180deg);
-            left: 30%;          
-          }
-          @media (min-width: 600px){
-            .computer-select{
-              left: 45%;          
-            }
-          }       
+         
       `;
 
     div.innerHTML = `
@@ -264,7 +225,7 @@ class Play extends HTMLElement {
       </div>
     </div>
     `;
-    this.shadow.firstChild?.remove();
+    this.firstChild?.remove();
     this.shadow.appendChild(style);
     this.shadow.appendChild(div);
   }

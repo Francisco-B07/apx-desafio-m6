@@ -8,7 +8,7 @@ class CompartiCodigo extends HTMLElement {
 
     this.render();
     state.checkCantPlayers((err) => {
-      if (err) console.error("Hubo un error en el listenRoom");
+      if (err) console.error("Hubo un error en el checkCantPlayers");
       this.goInstructiones();
     });
     state.subscribe(() => {
@@ -129,7 +129,7 @@ class CompartiCodigo extends HTMLElement {
           .container-figuras{
             position: absolute;
             left: 15%;
-            top: 87%;
+            top: 85%;
           }
           @media (max-width: 370px){
             .container-figuras{
@@ -140,7 +140,7 @@ class CompartiCodigo extends HTMLElement {
           @media (min-width: 600px){
             .container-figuras{
               left: 40%;
-              top: 87%;
+              top: 85%;
             }
           }
   

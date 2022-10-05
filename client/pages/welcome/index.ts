@@ -103,7 +103,7 @@ class Welcome extends HTMLElement {
             .container-figuras{
               position: absolute;
               left: 15%;
-              top: 87%;
+              top: 85%;
             }
             @media (max-width: 370px){
               .container-figuras{
@@ -114,7 +114,7 @@ class Welcome extends HTMLElement {
             @media (min-width: 600px){
               .container-figuras{
                 left: 38%;
-                top: 87%;
+                top: 85%;
               }
             }              
         `;

@@ -102,6 +102,7 @@ class SalaDeEspera extends HTMLElement {
           }
           
           .instrucciones{
+            max-width: 400px;
             padding: 70px 27px 0px 27px;
             text-align: center;
           }
@@ -125,7 +126,7 @@ class SalaDeEspera extends HTMLElement {
           .container-figuras{
             position: absolute;
             left: 15%;
-            top: 87%;
+            top: 85%;
           }
           @media (max-width: 370px){
             .container-figuras{
@@ -136,7 +137,7 @@ class SalaDeEspera extends HTMLElement {
           @media (min-width: 600px){
             .container-figuras{
               left: 40%;
-              top: 87%;
+              top: 85%;
             }
           }
   
