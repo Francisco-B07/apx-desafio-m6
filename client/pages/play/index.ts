@@ -33,8 +33,10 @@ class Play extends HTMLElement {
 
         state.pushJugada((err) => {
           if (err) console.error("Hubo un error en pushJugada de play");
+          setTimeout(() => {
+            Router.go("/eleccion");
+          }, 500);
 
-          Router.go("/eleccion");
           // Router.go("/instructions");
         });
         clearInterval(intervalId);
