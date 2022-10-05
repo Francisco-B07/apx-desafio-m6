@@ -61,7 +61,7 @@ class Empezar extends HTMLElement {
                     });
                   });
                 } else {
-                  alert("La sala ya esta ocupada");
+                  Router.go("/sala-en-uso");
                 }
               });
             });

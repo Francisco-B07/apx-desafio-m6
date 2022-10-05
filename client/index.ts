@@ -18,6 +18,7 @@ import "./pages/sala-de-espera/index";
 import "./pages/play/index";
 import "./pages/eleccion/index";
 import "./pages/result/index";
+import "./pages/sala-en-uso/index";
 
 // OTROS IMPORTS
 import "./router";

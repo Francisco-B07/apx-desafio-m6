@@ -69,7 +69,7 @@ app.post("/rooms", (req, res) => {
           })
           .then(() => {
             const roomLongId = roomRef.key;
-            const roomId = 1000 + Math.floor(Math.random() * 999);
+            const roomId = 1000 + Math.floor(Math.random() * 999) + "FB";
             roomsCollection
               .doc(roomId.toString())
               .set({

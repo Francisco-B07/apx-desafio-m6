@@ -12,4 +12,5 @@ router.setRoutes([
   { path: "/play", component: "play-component" },
   { path: "/eleccion", component: "eleccion-component" },
   { path: "/result", component: "result-component" },
+  { path: "/sala-en-uso", component: "sala-en-uso-component" },
 ]);
