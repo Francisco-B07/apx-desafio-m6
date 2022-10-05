@@ -3,7 +3,7 @@ const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:3000";
 import { rtdb } from "./rtdb";
 import map from "lodash/map";
 
-type Jugada = "piedra" | "papel" | "tijera" | "";
+type Jugada = "piedra" | "papel" | "tijera" | "" | "nada";
 type Game = {
   nombre: string;
   online: boolean;

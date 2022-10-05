@@ -6,6 +6,7 @@ import { initPiedra } from "./components/piedra";
 import { initPapel } from "./components/papel";
 import { initPiedraPapelTijera } from "./components/piedra-papel-tijera";
 import { initEstrella } from "./components/estrella";
+import { initNada } from "./components/nada";
 
 // IMPORT DE PAGES
 import "./pages/welcome/index";
@@ -29,6 +30,7 @@ import { state } from "./state";
   initTijera();
   initPiedra();
   initPapel();
+  initNada();
   initPiedraPapelTijera();
   const root = document.querySelector(".root")!;
   state.init();

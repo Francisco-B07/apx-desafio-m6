@@ -20,7 +20,9 @@ class Play extends HTMLElement {
       }
 
       if (counter == -1) {
-        if (cs.currentGame.choice != "") {
+        if (cs.currentGame.choice == "") {
+          state.setChoice("nada");
+        } else {
           state.setChoice(cs.currentGame.choice);
         }
         state.setStart(false);
