@@ -60,6 +60,11 @@ const state = {
     cs.currentGame.nombre = nombre;
     this.setState(cs);
   },
+  setNombreOponente(nombre: string) {
+    const cs = this.getState();
+    cs.oponente.nombre = nombre;
+    this.setState(cs);
+  },
   setRoomId(roomId: string) {
     const cs = this.getState();
     cs.roomId = roomId;
@@ -80,14 +85,15 @@ const state = {
     cs.oponente = oponente;
     this.setState(cs);
   },
-  setCurrentGame(currentGame: Game) {
-    const cs = this.getState();
-    cs.currentGame = currentGame;
-    this.setState(cs);
-  },
+
   setScore(score: number) {
     const cs = this.getState();
     cs.currentGame.score = score;
+    this.setState(cs);
+  },
+  setScoreOponente(score: number) {
+    const cs = this.getState();
+    cs.oponente.score = score;
     this.setState(cs);
   },
   setStart(start: boolean) {
@@ -314,11 +320,15 @@ const state = {
       this.setCantPlayers(currentGame.length);
       if (cs.cantPlayers == 2) {
         if (cs.currentGame.nombre == jugadorUno) {
-          this.setCurrentGame(currentGame[0]);
-          this.setOponente(currentGame[1]);
+          this.setScore(currentGame[0].score);
+          this.setScoreOponente(currentGame[1].score);
+          this.setNombre(currentGame[0].nombre);
+          this.setNombreOponente(currentGame[1].nombre);
         } else {
-          this.setCurrentGame(currentGame[1]);
-          this.setOponente(currentGame[0]);
+          this.setScore(currentGame[1].score);
+          this.setScoreOponente(currentGame[0].score);
+          this.setNombre(currentGame[1].nombre);
+          this.setNombreOponente(currentGame[0].nombre);
         }
       } else {
         this.setScore(0);
