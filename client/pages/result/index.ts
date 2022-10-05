@@ -10,7 +10,7 @@ class Result extends HTMLElement {
     var botonEl = this.shadow.querySelector(".container-boton");
 
     botonEl?.addEventListener("click", () => {
-      state.setChoice("nada");
+      state.setChoice("");
       state.setStart(false);
       state.pushJugada((err) => {
         if (err) console.error("Hubo un error en pushJugada de result");

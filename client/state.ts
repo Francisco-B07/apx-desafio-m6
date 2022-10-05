@@ -3,7 +3,7 @@ const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:3000";
 import { rtdb } from "./rtdb";
 import map from "lodash/map";
 
-type Jugada = "piedra" | "papel" | "tijera" | "nada";
+type Jugada = "piedra" | "papel" | "tijera" | "nada" | "";
 type Oponente = {
   nombre: string;
   choice: string;
@@ -25,6 +25,7 @@ const state = {
       choice: "",
       score: 0,
       irAInstrucciones: false,
+      irAResult: false,
     },
     currentGame: {
       nombre: "",
@@ -33,6 +34,7 @@ const state = {
       choice: "nada",
       score: 0,
       irAInstrucciones: false,
+      irAResult: false,
     },
     ocupada: false,
     cantPlayers: 0,
@@ -107,6 +109,11 @@ const state = {
   setIrAInstrucciones(irAInstrucciones: boolean) {
     const cs = this.getState();
     cs.currentGame.irAInstrucciones = irAInstrucciones;
+    this.setState(cs);
+  },
+  setIrAResult(irAResult: boolean) {
+    const cs = this.getState();
+    cs.currentGame.irAResult = irAResult;
     this.setState(cs);
   },
 

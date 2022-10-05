@@ -1,45 +1,83 @@
 import { state } from "../../state";
 import { Router } from "@vaadin/router";
-
+type Jugada = "piedra" | "papel" | "tijera" | "nada" | "";
 class Eleccion extends HTMLElement {
   shadow: ShadowRoot;
   connectedCallback() {
     console.log("entre a eleccion");
 
     this.shadow = this.attachShadow({ mode: "open" });
-    this.render();
-    this.redirect();
-    // state.subscribe(() => {
-    //   this.render();
-    //   this.redirect();
-    // });
+    const cs = state.getState();
+    this.render(cs.oponente.choice);
+
+    // this.goResult();
+    state.subscribe(() => {
+      const cs = state.getState();
+      console.log("entre al SUSCRIBE", cs.oponente.choice);
+      this.render(cs.oponente.choice);
+
+      // this.redirect();
+    });
+    state.setIrAResult(true);
+    setTimeout(() => {
+      this.goResult();
+    }, 2000);
+
+    // setTimeout(() => {
+
+    // state.setIrAResult(true);
+    // setTimeout(() => {
+    //   Router.go("/result");
+    //   // state.setChoice("");
+    //   state.setIrAResult(false);
+    // }, 3000);
+    //   Router.go("/result");
+    // }, 3000);
     // const cs = state.getState();
     // state
 
     // let counter = 3;
-    // let counter2 = 0;
+    //   let counter2 = 0;
 
-    // const intervalId2 = setInterval(() => {
-    //   counter2++;
-    //   if (counter2 > 3) {
-    //     Router.go("/result");
-    //     clearInterval(intervalId2);
-    //   }
-    // }, 1000);
+    //   const intervalId2 = setInterval(() => {
+    //     let contador = cs.irAResult;
+    //     contador++;
+    //     state.setIrAResult(contador);
+    //     if (contador <= 2) {
+    //       Router.go("/eleccion");
+    //       clearInterval(intervalId2);
+    //     }
+
+    //     if (contador > 2) {
+    //       Router.go("/result");
+    //       clearInterval(intervalId2);
+    //     }
+    //   }, 1000);
   }
-  redirect() {
+  goResult() {
     const cs = state.getState();
-    console.log("eleccion de mi rival", cs.oponente.choice);
-
-    if (cs.oponente.choice == "nada") {
-      Router.go("/instructions");
-    } else {
-      setTimeout(() => {
+    if (cs.oponente.irAResult == true && cs.currentGame.irAResult == true) {
+      state.pushJugada((err) => {
         Router.go("/result");
-      }, 3000);
+      });
     }
   }
-  render() {
+  // goResult() {
+  //   const cs = state.getState();
+  //   state.setIrAResult(true);
+  //   if (
+  //     cs.oponente.choice != "" &&
+  //     cs.currentGame.choice != "" &&
+  //     cs.irAResult
+  //   ) {
+  //     setTimeout(() => {
+  //       Router.go("/result");
+  //       // state.setChoice("");
+  //       state.setIrAResult(false);
+  //     }, 3000);
+  //   }
+  // }
+  render(jugada?: Jugada) {
     const cs = state.getState();
 
     const div = document.createElement("div");
@@ -93,12 +131,12 @@ class Eleccion extends HTMLElement {
     div.innerHTML = `
     <div class="container">
       <div class="container-page">
-          <${cs.oponente.choice}-el class="computer-select"></${cs.oponente.choice}-el>
+          <${jugada}-el class="computer-select"></${jugada}-el>
           <${cs.currentGame.choice}-el class="jugado"></${cs.currentGame.choice}-el>
       </div>
     </div>
     `;
-    this.firstChild?.remove();
+    this.shadow.firstChild?.remove();
 
     this.shadow.appendChild(style);
     this.shadow.appendChild(div);

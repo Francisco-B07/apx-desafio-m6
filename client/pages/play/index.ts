@@ -22,16 +22,20 @@ class Play extends HTMLElement {
 
       // const elegido = this.shadow.querySelector(".seleccionado");
       if (counter == -1) {
-        state.setChoice(cs.currentGame.choice);
+        if (cs.currentGame.choice == "") {
+          state.setChoice("nada");
+        } else {
+          state.setChoice(cs.currentGame.choice);
+        }
+
         state.setStart(false);
+        state.setIrAResult(true);
 
         state.pushJugada((err) => {
           if (err) console.error("Hubo un error en pushJugada de play");
-          if (cs.currentGame.choice == "nada") {
-            Router.go("/instructions");
-          } else {
-            Router.go("/eleccion");
-          }
+
+          Router.go("/eleccion");
+          // Router.go("/instructions");
         });
         clearInterval(intervalId);
         //   elegido.classList.add("jugado");
