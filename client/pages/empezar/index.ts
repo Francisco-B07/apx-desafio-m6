@@ -46,16 +46,21 @@ class Empezar extends HTMLElement {
               // state.setRtdbRoomId(cs.rtdbRoomId);
 
               state.checkRoomDisponible((err) => {
-                if (err) console.error("Hubo un error en el listenRoom");
+                if (err)
+                  console.error("Hubo un error en el checkRoomDisponible");
                 const cs = state.getState();
                 if (!cs.ocupada) {
                   state.setStart(false);
                   state.setChoice("");
                   state.setIrAInstrucciones(true);
                   state.actualizarScore((err) => {
-                    if (err) console.error("Hubo un error en el listenRoom");
+                    if (err)
+                      console.error("Hubo un error en el actualizarScore");
                     state.pushJugada((err) => {
-                      if (err) console.error("Hubo un error en el listenRoom");
+                      if (err)
+                        console.error(
+                          "Hubo un error en el pushJugada de empezar"
+                        );
 
                       Router.go("/compartiCodigo");
                     });
