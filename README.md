@@ -1,4 +1,4 @@
-# apx-desafio-m6
+# Juego Piedra, papel o tijeras online
 Este proyecto es la segunda versión del juego piedra, papel o tijeras. En esta ocación se puede jugar online vs otro jugador.
 
 # Tecnologias usadas:
