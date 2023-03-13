@@ -1,9 +1,19 @@
 # apx-desafio-m6
+Este proyecto es la segunda versión del juego piedra, papel o tijeras. En esta ocación se puede jugar online vs otro jugador.
 
-link de API documentada con Postman:
+# Tecnologias usadas:
+- Node.JS 
+- TypeScript
+- Firestore
+- Real Time data base
+- Parcel
+- Express
+
+# Link de API documentada con Postman:
 https://documenter.getpostman.com/view/19023963/2s83zdwRiy
 
-link de la app en Heroku:
-https://juego-piedra-papel-o-tijera.herokuapp.com/
+# Link de la web app:
+https://piedra-papel-o-tijera-online.up.railway.app/
 
-Esta versión del juego esta realizada en typescript. El backend esta hecho con node.js y firebase. Se puede jugar online vs otro jugador y llevar el score por siempre.
+# Link a la primer versión de esta app
+https://github.com/Francisco-B07/juego-piedra-papel-o-tijera
